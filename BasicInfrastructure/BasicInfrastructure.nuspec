@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>tgarcia.Utils.BasicInfrastructure.Persistence</id>
+    <version>0.0.6</version>
+    <title>Basic Infrastructure Persistence</title>
+    <authors>Thiago Garcia</authors>
+    <owners>Thiago Garcia</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Just a helper for persistence of a basic infrastructure using EF</description>
+    <releaseNotes>First test release</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>Service Repository</tags>
+  </metadata>
+</package>
