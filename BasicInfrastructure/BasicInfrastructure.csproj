@@ -80,6 +80,10 @@
     <Compile Include="Extensions\HandleExceptionAttribute.cs" />
     <Compile Include="Extensions\PagedListResult.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="ParameterHelpers\Filter.cs" />
+    <Compile Include="ParameterHelpers\IFilter.cs" />
+    <Compile Include="ParameterHelpers\IRequestParameters.cs" />
+    <Compile Include="ParameterHelpers\RequestParameters.cs" />
     <Compile Include="Persistence\BaseRepository.cs" />
     <Compile Include="Persistence\Entity.cs" />
     <Compile Include="Persistence\IBaseRepository.cs" />

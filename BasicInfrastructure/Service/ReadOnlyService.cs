@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using BasicInfrastructure.ParameterHelpers;
 using BasicInfrastructure.Persistence;
 
 namespace BasicInfrastructure.Service
@@ -14,9 +15,9 @@ namespace BasicInfrastructure.Service
             Repository = repository;
         }
 
-        public virtual async Task<IQueryable<T>> GetAll()
+        public virtual async Task<IQueryable<T>> GetAll(IRequestParameters<T> request)
         {
-            return await Repository.GetAll();
+            return request.GetQuery(await Repository.GetAll());
         }
 
         public virtual async Task<T> Get(int id)

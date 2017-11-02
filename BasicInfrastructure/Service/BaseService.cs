@@ -4,24 +4,12 @@ using BasicInfrastructure.Persistence;
 
 namespace BasicInfrastructure.Service
 {
-    public class BaseService<T> : IService<T> 
+    public class BaseService<T> : ReadOnlyService<T>, IService<T>
         where T : Entity
     {
-        protected IRepository<T> Repository;
 
-        public BaseService(IRepository<T> repository)
+        public BaseService(IRepository<T> repository) : base(repository)
         {
-            Repository = repository;
-        }
-
-        public virtual async Task<IQueryable<T>> GetAll()
-        {
-            return await Repository.GetAll();
-        }
-
-        public virtual async Task<T> Get(int id)
-        {
-            return await Repository.Get(id);
         }
 
         public virtual async Task<T> Add(T entity)
