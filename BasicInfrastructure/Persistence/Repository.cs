@@ -15,7 +15,7 @@ namespace BasicInfrastructure.Persistence
 
         public IQueryable<T> Items { get { lock (_locker) { return _context.Set<T>(); } } }
 
-        public async Task<IQueryable<T>> GetAll()
+        public virtual async Task<IQueryable<T>> GetAll()
         {
             return Items.OrderBy(x => x.Id).AsQueryable();
         }

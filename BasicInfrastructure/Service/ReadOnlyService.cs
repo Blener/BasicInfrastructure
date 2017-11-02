@@ -15,7 +15,7 @@ namespace BasicInfrastructure.Service
             Repository = repository;
         }
 
-        public virtual async Task<IQueryable<T>> GetAll(IRequestParameters<T> request)
+        public virtual async Task<IQueryable<T>> GetAll(IRequestParameters<T> request = default)
         {
             return request.GetQuery(await Repository.GetAll());
         }

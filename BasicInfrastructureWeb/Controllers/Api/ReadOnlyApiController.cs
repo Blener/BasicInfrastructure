@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Results;
+using System.Web.Http.Routing;
 using BasicInfrastructure.Extensions;
 using BasicInfrastructure.ParameterHelpers;
 using BasicInfrastructure.Persistence;
@@ -15,9 +17,9 @@ namespace BasicInfrastructureWeb.Controllers.Api
 
         public ReadOnlyApiController(IReadOnlyService<T> service) => _service = service;
 
-        public virtual async Task<JsonResult<PagedListResult<T>>> Get(IRequestParameters<T> request)
+        public virtual async Task<JsonResult<PagedListResult<T>>> Get([FromUri] RequestParameters<T> request)
         {
-            return Json(await _service.GetAll(null).ToPagedListResultAsync(request.Page, request.PerPage));
+            return Json(await _service.GetAll(request).ToPagedListResultAsync(request));
         }
 
         public virtual async Task<JsonResult<T>> Get(int? id)

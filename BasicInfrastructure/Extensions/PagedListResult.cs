@@ -1,54 +1,50 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BasicInfrastructure.ParameterHelpers;
+using BasicInfrastructure.Persistence;
 using PagedList;
 
 namespace BasicInfrastructure.Extensions
 {
-    public static class PagedListResultExtensions
+    public static class PagedListResultExtensions 
     {
-        public static PagedListResult<T> ToPagedListResult<T>(this IQueryable<T> list, int page, int perPage)
+        public static PagedListResult<T> ToPagedListResult<T>(this IQueryable<T> list, RequestParameters<T> request) where T : Entity
         {
-            return PagedListResult<T>.Create(list, page, perPage);
+            return PagedListResult<T>.Create(list, request);
         }
 
-        public static async Task<PagedListResult<T>> ToPagedListResultAsync<T>(this Task<IQueryable<T>> list, int page, int perPage)
+        public static async Task<PagedListResult<T>> ToPagedListResultAsync<T>(this Task<IQueryable<T>> list, RequestParameters<T> request) where T : Entity
         {
-            return await PagedListResult<T>.CreateAsync(list, page, perPage);
+            return await PagedListResult<T>.CreateAsync(list, request);
         }
     }
 
-    public class PagedListResult<T>
+    public class PagedListResult<T> where T: Entity
     {
-        public int Page { get; set; }
-        public int PageCount { get; set; }
-        public int PageSize { get; set; }
-        public int ItemCount { get; set; }
-        public IPagedList<T> Items { get; set; }
+        public IQueryable<T> Items { get; set; }
+        public IRequestParameters<T> Request { get; set; }
 
-        public PagedListResult(IEnumerable<T> list, int page, int pageSize) :
-            this(list?.AsQueryable(), page, pageSize)
+        public PagedListResult(IEnumerable<T> list, IRequestParameters<T> request) :
+            this(list?.AsQueryable(), request)
         {
         }
-        public PagedListResult(IQueryable<T> list, int page, int pageSize)
+        public PagedListResult(IQueryable<T> list, IRequestParameters<T> request)
         {
-            Items = list.ToPagedList(page, pageSize);
-
-            Page = Items.PageNumber;
-            PageSize = Items.PageSize < 1 ? 1 : Items.PageSize;
-            PageCount = Items.PageCount < 1 ? 1 : Items.PageCount;
-            ItemCount = Items.TotalItemCount;
+            Items = list;
+            Request = request;
         }
 
-        public static PagedListResult<T> Create(IQueryable<T> items, int page, int pageSize)
+        public static PagedListResult<T> Create(IQueryable<T> items, RequestParameters<T> request)
         {
-            return new PagedListResult<T>(items, page, pageSize);
+            return new PagedListResult<T>(items, request);
         }
 
-        public static async Task<PagedListResult<T>> CreateAsync(Task<IQueryable<T>> itens, int pagina, int porPagina)
+        public static async Task<PagedListResult<T>> CreateAsync(Task<IQueryable<T>> itens, RequestParameters<T> request)
         {
             var i = await itens;
-            return Create(i, pagina, porPagina);
+            return Create(i, request);
         }
     }
 }
