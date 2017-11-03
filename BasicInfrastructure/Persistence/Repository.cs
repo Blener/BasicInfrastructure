@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using BasicInfrastructure.ParameterHelpers;
 
 namespace BasicInfrastructure.Persistence
 {
@@ -15,9 +16,9 @@ namespace BasicInfrastructure.Persistence
 
         public IQueryable<T> Items { get { lock (_locker) { return _context.Set<T>(); } } }
 
-        public virtual async Task<IQueryable<T>> GetAll()
+        public virtual async Task<IQueryable<T>> GetAll(IRequestParameters<T> request)
         {
-            return Items.OrderBy(x => x.Id).AsQueryable();
+            return await Task.Run(() => request.GetQuery(Items));
         }
     }
 }
