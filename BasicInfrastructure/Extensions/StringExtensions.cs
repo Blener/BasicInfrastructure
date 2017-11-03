@@ -205,14 +205,30 @@ namespace BasicInfrastructure.Extensions
             }
             catch
             {
-                if(defaultValue.HasValue)                
+                if (defaultValue.HasValue)
                     return defaultValue.Value;
 
                 throw;
             }
         }
-		
-		[DebuggerStepThrough]
+
+        [DebuggerStepThrough]
+        public static double ToDouble(this string str, double? defaultValue = null)
+        {
+            try
+            {
+                return double.Parse(str.Replace(",", "."));
+            }
+            catch
+            {
+                if (defaultValue.HasValue)
+                    return defaultValue.Value;
+
+                throw;
+            }
+        }
+
+        [DebuggerStepThrough]
         public static string RemoveStringTags(this string text)
         {
             return text.Replace("\\n", ((char)10).ToString())

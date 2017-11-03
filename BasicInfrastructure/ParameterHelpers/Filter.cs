@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using BasicInfrastructure.Extensions;
 using BasicInfrastructure.Persistence;
 
 namespace BasicInfrastructure.ParameterHelpers
@@ -24,47 +25,80 @@ namespace BasicInfrastructure.ParameterHelpers
             {
                 case "eq":
                 case "equals":
-                    query = query.Where(x =>
-                        x.GetType().GetProperty(prop.Name).GetValue(x).ToString()
+                    return query.Where(x =>
+                        prop.GetValue(x).ToString()
                             .Equals(Value, StringComparison.InvariantCulture));
-                    break;
                 case "eqi":
                 case "equalsInsentitive":
-                    query = query.Where(x =>
-                        x.GetType().GetProperty(prop.Name).GetValue(x).ToString()
+                    return query.Where(x =>
+                        prop.GetValue(x).ToString()
                             .Equals(Value, StringComparison.InvariantCultureIgnoreCase));
-                    break;
+                case "eqn":
+                case "equalsNumber":
+                    //TODO Tolerance Configuration for double comparison
+                    return query.Where(x =>
+                        Math.Abs(prop.GetValue(x).ToString().ToDouble(null) - Value.ToDouble(null)) < 0.0000000000001);
                 case "ct":
                 case "contains":
-                    query = query.Where(x =>
-                        x.GetType().GetProperty(prop.Name).GetValue(x).ToString()
+                    return query.Where(x =>
+                        prop.GetValue(x).ToString()
                             .Contains(Value));
-                    break;
                 case "cti":
                 case "containsInsensitive":
-                    query = query.Where(x =>
-                        x.GetType().GetProperty(prop.Name).GetValue(x).ToString().ToLower()
+                    return query.Where(x =>
+                        prop.GetValue(x).ToString().ToLower()
                             .Contains(Value.ToLower()));
-                    break;
                 case "sw":
                 case "startsWith":
+                    return query.Where(x =>
+                        prop.GetValue(x).ToString()
+                            .StartsWith(Value, StringComparison.InvariantCulture));
                 case "swi":
                 case "startsWithInsensitive":
+                    return query.Where(x =>
+                        prop.GetValue(x).ToString()
+                            .StartsWith(Value, StringComparison.InvariantCultureIgnoreCase));
                 case "ew":
+                case "endsWith":
+                    return query.Where(x =>
+                        prop.GetValue(x).ToString()
+                            .EndsWith(Value, StringComparison.InvariantCulture));
                 case "ewi":
+                case "endsWithInsensitive":
+                    return query.Where(x =>
+                        prop.GetValue(x).ToString()
+                            .EndsWith(Value, StringComparison.InvariantCultureIgnoreCase));
                 case "gt":
+                case "greatherThan":
+                    return query.Where(x =>
+                        prop.GetValue(x).ToString().ToDouble(null) > Value.ToDouble(null)
+                    );
                 case "gte":
+                case "greatherThanOrEqual":
+                    return query.Where(x =>
+                        prop.GetValue(x).ToString().ToDouble(null) >= Value.ToDouble(null)
+                    );
                 case "lt":
+                case "lessThan":
+                    return query.Where(x =>
+                        prop.GetValue(x).ToString().ToDouble(null) < Value.ToDouble(null)
+                    );
                 case "lte":
+                case "lessThanOrEqual":
+                    return query.Where(x =>
+                        prop.GetValue(x).ToString().ToDouble(null) <= Value.ToDouble(null)
+                    );
                 case "bf":
+                case "before":
                 case "bfi":
+                case "beforeInclusive":
                 case "af":
+                case "after":
                 case "afi":
+                case "afterInclusive":
                 default:
-                    break;
+                    throw new ArgumentOutOfRangeException(nameof(Operation));
             }
-
-            return query;
         }
     }
 }
