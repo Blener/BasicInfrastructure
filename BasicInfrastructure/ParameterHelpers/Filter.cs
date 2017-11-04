@@ -90,12 +90,24 @@ namespace BasicInfrastructure.ParameterHelpers
                     );
                 case "bf":
                 case "before":
+                    return query.Where(x =>
+                        prop.GetValue(x).ToString().ToDateTimeTicks() < Value.ToDateTimeTicks()
+                    );
                 case "bfi":
                 case "beforeInclusive":
+                    return query.Where(x =>
+                        prop.GetValue(x).ToString().ToDateTimeTicks() <= Value.ToDateTimeTicks()
+                    );
                 case "af":
                 case "after":
+                    return query.Where(x =>
+                        prop.GetValue(x).ToString().ToDateTimeTicks() > Value.ToDateTimeTicks()
+                    );
                 case "afi":
                 case "afterInclusive":
+                    return query.Where(x =>
+                        prop.GetValue(x).ToString().ToDateTimeTicks() >= Value.ToDateTimeTicks()
+                    );
                 default:
                     throw new ArgumentOutOfRangeException(nameof(Operation));
             }

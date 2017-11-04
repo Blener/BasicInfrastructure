@@ -18,91 +18,91 @@ namespace BasicInfrastructure.Extensions
         {
             return stringValues.Any(otherValue => String.CompareOrdinal(value, otherValue) == 0);
         }
-        
+
         [DebuggerStepThrough]
         public static T ToEnum<T>(this string value)
             where T : struct
         {
             return (T)Enum.Parse(typeof(T), value, true);
         }
-        
+
         [DebuggerStepThrough]
         public static string Right(this string value, int length)
         {
             return value != null && value.Length > length ? value.Substring(value.Length - length) : value;
         }
-        
+
         [DebuggerStepThrough]
         public static string Left(this string value, int length)
         {
             return value != null && value.Length > length ? value.Substring(0, length) : value;
         }
-        
+
         [DebuggerStepThrough]
         public static string ExtractNumbers(this string value)
         {
             return value == null ? null : string.Join(null, Regex.Split(value, "[^\\d]"));
         }
-        
+
         [DebuggerStepThrough]
         public static string FormatNumber(this string value, string pattern)
         {
             var number = long.Parse(ExtractNumbers(value));
-        
+
             return string.Format(pattern, number);
         }
-        
+
         [DebuggerStepThrough]
         public static bool IsCEP(this string value)
         {
             return !value.IsEmpty() && (Regex.IsMatch(value, @"^\d{2}.\d{3}-\d{3}$") || Regex.IsMatch(value, @"^\d{5}-\d{3}$") || Regex.IsMatch(value, @"^\d{8}$"));
         }
-        
+
         [DebuggerStepThrough]
         public static bool IsURL(this string value)
         {
             return Regex.IsMatch(value, @"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?");
         }
-        
+
         [DebuggerStepThrough]
         public static bool IsEmpty(this string value)
         {
             return string.IsNullOrEmpty(value.NullSafe());
         }
-        
+
         [DebuggerStepThrough]
         public static string IsEmpty(this string value, string defaultValue)
         {
             return string.IsNullOrEmpty(value.NullSafe()) ? defaultValue : value;
         }
-        
+
         [DebuggerStepThrough]
         public static string NullSafe(this string value)
         {
             return (value ?? string.Empty).Trim();
         }
-        
+
         [DebuggerStepThrough]
         public static bool IsEmail(this string s)
         {
             var regex = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
             return regex.IsMatch(s);
         }
-        
+
         [DebuggerStepThrough]
         public static string ToSeparatedWords(this string value)
         {
             return Regex.Replace(value, "([A-Z][a-z])", " $1").Trim();
         }
-        
+
         [DebuggerStepThrough]
         public static bool IsNumeric(this string source)
         {
             long lng;
-        
+
             return long.TryParse(source, out lng);
         }
-        
+
         [DebuggerStepThrough]
         public static string Sanitize(this string source)
         {
@@ -110,18 +110,18 @@ namespace BasicInfrastructure.Extensions
 
             var r = string.Empty;
             var matches = Regex.Matches(source, "\\w");
-            return matches.Cast<Match>().Aggregate(r, (current, match) => current + match.ToString()); 
+            return matches.Cast<Match>().Aggregate(r, (current, match) => current + match.ToString());
         }
-        
+
         [DebuggerStepThrough]
         public static byte[] GetFileData(this string fileName, string filePath)
         {
             var fullFilePath = string.Format("{0}/{1}", filePath, fileName);
             if (!File.Exists(fullFilePath)) throw new FileNotFoundException("The file does not exist.", fullFilePath);
-        
+
             return File.ReadAllBytes(fullFilePath);
         }
-        
+
         [DebuggerStepThrough]
         public static string NormalizeString(this string source)
         {
@@ -132,19 +132,19 @@ namespace BasicInfrastructure.Extensions
                 var uc = CharUnicodeInfo.GetUnicodeCategory(ch);
                 if (uc != UnicodeCategory.NonSpacingMark) sb.Append(ch);
             }
-        
+
             return sb.ToString();
         }
-        
+
         [DebuggerStepThrough]
         public static Guid ToGuid(this string target)
         {
             var result = Guid.Empty;
-            
+
             if ((!string.IsNullOrEmpty(target)) && (target.Trim().Length == 22))
             {
                 var encoded = string.Concat(target.Trim().Replace("-", "+").Replace("_", "/"), "==");
-                
+
                 try
                 {
                     var base64 = Convert.FromBase64String(encoded);
@@ -154,7 +154,7 @@ namespace BasicInfrastructure.Extensions
                 {
                 }
             }
-        
+
             return result;
         }
 
@@ -217,7 +217,7 @@ namespace BasicInfrastructure.Extensions
         {
             try
             {
-                return double.Parse(str.Replace(",", "."));
+                return double.Parse(str);
             }
             catch
             {
@@ -226,6 +226,28 @@ namespace BasicInfrastructure.Extensions
 
                 throw;
             }
+        }
+
+        [DebuggerStepThrough]
+        public static long ToLong(this string str, long? defaultValue = null)
+        {
+            try
+            {
+                return long.Parse(str);
+            }
+            catch
+            {
+                if (defaultValue.HasValue)
+                    return defaultValue.Value;
+
+                throw;
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static long ToDateTimeTicks(this string str)
+        {
+            return DateTime.Parse(str).Ticks;
         }
 
         [DebuggerStepThrough]
