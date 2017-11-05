@@ -2,13 +2,13 @@
 <package >
   <metadata>
     <id>tgarcia.Utils.BasicInfrastructure.Extensions</id>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
     <title>Basic Infrastructure Extensions</title>
     <authors>Thiago Garcia</authors>
     <owners>Thiago Garcia</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Just a helper for some useful extensions</description>
-    <releaseNotes>Filters and ordering implemented</releaseNotes>
+    <releaseNotes>Support to Authentication and Authorization</releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>Service Repository</tags>
   </metadata>

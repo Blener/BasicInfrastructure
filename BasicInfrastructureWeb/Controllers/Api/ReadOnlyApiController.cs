@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Results;
 using System.Web.Http.Routing;
@@ -17,9 +18,9 @@ namespace BasicInfrastructureWeb.Controllers.Api
 
         public ReadOnlyApiController(IReadOnlyService<T> service) => _service = service;
 
-        public virtual async Task<JsonResult<PagedListResult<T>>> Get([FromUri] RequestParameters<T> request)
+        public virtual async Task<JsonResult<PagedResult<T>>> Get([FromUri] RequestParameters<T> request)
         {
-            return Json(await _service.GetAll(request).ToPagedListResultAsync(request));
+            return Json(await _service.GetAll(request).ToPagedResultAsync(request));
         }
 
         public virtual async Task<JsonResult<T>> Get(int? id)

@@ -7,7 +7,7 @@ namespace BasicInfrastructure.ParameterHelpers
 {
     public class RequestParameters<T> : IRequestParameters<T> where T : Entity
     {
-        public int Page { get; set; }
+        public int PageId { get; set; }
         public int PerPage { get; set; }
         public string SortField { get; set; }
         public bool? SortDirection { get; set; }
@@ -52,9 +52,12 @@ namespace BasicInfrastructure.ParameterHelpers
 
         protected virtual IQueryable<T> GetPaginationQuery(IQueryable<T> query)
         {
+            PageId = PageId < 0 ? 0 : PageId;
+            PerPage = PerPage <= 0 ? 10 : PerPage;
+
             ItemCount = query.Count();
             PageCount = (int)Math.Ceiling(((decimal)ItemCount) / PerPage);
-            return query.Skip(Page * PerPage).Take(PerPage);
+            return query.Skip(PageId * PerPage).Take(PerPage);
         }
     }
 }

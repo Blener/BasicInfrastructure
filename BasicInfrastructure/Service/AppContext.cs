@@ -7,10 +7,15 @@ namespace BasicInfrastructure.Service
 {
     public class AppContext : DbContext
     {
+#if DEBUG
         public AppContext(string nameOrConnectionString = "DefaultConnection") : base(nameOrConnectionString)
         {
-            //Database.Connection.ConnectionString = connectionString;
         }
+#else
+        public AppContext(string nameOrConnectionString = "ProductionConnection") : base(nameOrConnectionString)
+        {
+        }
+#endif
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             const string prefix = "";

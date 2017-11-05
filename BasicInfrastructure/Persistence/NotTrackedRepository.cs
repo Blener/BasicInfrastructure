@@ -18,7 +18,7 @@ namespace BasicInfrastructure.Persistence
 
         public virtual async Task<IQueryable<T>> GetAll(IRequestParameters<T> request)
         {
-            return await Task.Run(() => request.GetQuery(Items));
+            return await Task.Run(() => request?.GetQuery(Items) ?? Items);
         }
     }
 }

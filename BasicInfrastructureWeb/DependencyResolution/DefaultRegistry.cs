@@ -29,8 +29,8 @@ namespace BasicInfrastructureWeb.DependencyResolution {
 					x.WithDefaultConventions();
 					x.With(new ControllerConvention());
 				});
-			//For<IExample>().Use<Example>();
-		}
+            //For<IExample>().Use<Example>();
+        }
 
 		#endregion
 	}

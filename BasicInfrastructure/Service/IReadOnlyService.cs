@@ -7,7 +7,7 @@ namespace BasicInfrastructure.Service
 {
     public interface IReadOnlyService<T> where T : Entity
     {
-        Task<IQueryable<T>> GetAll(IRequestParameters<T> request);
+        Task<IQueryable<T>> GetAll(IRequestParameters<T> request = null);
         Task<T> Get(int id);
     }
 }
