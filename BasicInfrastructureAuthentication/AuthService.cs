@@ -11,10 +11,15 @@ namespace BasicInfrastructureAuthentication
     public class AuthService : ReadOnlyService<User>, IAuthService
     {
         private readonly ITokenService _tokenService;
+        private readonly IService<ChangePasswordToken> _changePasswordService;
+        private readonly IService<Password> _passwordService;
 
-        public AuthService(IRepository<User> repository, ITokenService tokenService) : base(repository)
+        public AuthService(IRepository<User> repository, ITokenService tokenService,
+            IService<ChangePasswordToken> changePasswordService, IService<Password> passwordService) : base(repository)
         {
             _tokenService = tokenService;
+            _changePasswordService = changePasswordService;
+            _passwordService = passwordService;
         }
 
         private async Task<User> GetByLogin(string login)
@@ -44,7 +49,7 @@ namespace BasicInfrastructureAuthentication
         }
         public async Task<IAuthToken> Authenticate(IAuthToken token)
         {
-            if(token == null)
+            if (token == null)
                 throw new AuthenticationException();
 
             var dbToken = (await _tokenService.GetByToken(token.Token.ToString()));
@@ -60,6 +65,7 @@ namespace BasicInfrastructureAuthentication
             return await _tokenService.Authorize(newToken, controller, action);
 
         }
+
         private async Task<IAuthToken> CreateToken(User user)
         {
             var token = new AuthToken
@@ -78,6 +84,49 @@ namespace BasicInfrastructureAuthentication
             dbToken.LastTouch = DateTime.Now;
             dbToken.RenewInterval = sessionToken.RenewInterval < 10 ? dbToken.RenewInterval : sessionToken.RenewInterval;
             return await _tokenService.Update(dbToken);
+        }
+
+        public async Task<bool> ChangePasswordRequest(string login)
+        {
+            var user = await GetByLogin(login);
+            if (user == null)
+                return false;
+
+            var pwdToken = new ChangePasswordToken
+            {
+                User = user,
+                CreationTime = DateTime.Now,
+                Token = Guid.NewGuid()
+            };
+            pwdToken = await _changePasswordService.Add(pwdToken);
+            //TODO Send email
+            //TODO Use already active token
+            //TODO Remove old otkens
+
+            return true;
+        }
+
+        public async Task<IAuthToken> ChangePassword(ChangePasswordViewModel changePasswordViewModel)
+        {
+            if (changePasswordViewModel.Password != changePasswordViewModel.PasswordConfirmation)
+                throw new AuthenticationException();
+
+            //TODO Limit token to 24hours
+            var token = (await _changePasswordService.GetAll()).SingleOrDefault(
+                x => x.Token.ToString() == changePasswordViewModel.Token.ToString());
+            if (token == null)
+                throw new AuthenticationException();
+
+            var user = token.User;
+            user.Password.SetValue(changePasswordViewModel.Password);
+            user.Password.CreationDate = DateTime.Now;
+
+            await _passwordService.Update(user.Password);
+            var newLoginToken = await CreateToken(user);
+
+            await _changePasswordService.Delete(token);
+
+            return newLoginToken;
         }
     }
 }

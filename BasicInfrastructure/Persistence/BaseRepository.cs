@@ -77,7 +77,7 @@ namespace BasicInfrastructure.Persistence
 
         public async Task<bool> Delete(int id)
         {
-            var item = _context.Set<T>().SingleOrDefault(x => x.Id == id);
+            var item = await _context.Set<T>().SingleOrDefaultAsync(x => x.Id == id);
             if (item == null)
                 return false;
 

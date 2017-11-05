@@ -1,13 +1,27 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Cryptography;
 using BasicInfrastructure.Persistence;
 
 namespace BasicInfrastructureAuthentication
 {
-    public class LoginCredentials: IAuthable
+    public class LoginCredentials : IAuthable
     {
         public string Login { get; set; }
         public string Password { get; set; }
+    }
+    public class ChangePasswordViewModel
+    {
+        public Guid Token { get; set; }
+        public string Password { get; set; }
+        public string PasswordConfirmation { get; set; }
+    }
+
+    public class ChangePasswordToken : Entity
+    {
+        public Guid Token { get; set; }
+        public DateTime CreationTime { get; set; }
+        public virtual User User { get; set; }
     }
 
     public class User : Entity

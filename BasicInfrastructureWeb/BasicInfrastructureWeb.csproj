@@ -120,6 +120,7 @@
     <Compile Include="App_start\RouteConfig.cs" />
     <Compile Include="App_start\StructuremapMvc.cs" />
     <Compile Include="App_start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Api\ChangePasswordController.cs" />
     <Compile Include="Controllers\Api\AuthController.cs" />
     <Compile Include="Controllers\Api\ReadOnlyApiController.cs" />
     <Compile Include="Controllers\Api\BaseApiController.cs" />

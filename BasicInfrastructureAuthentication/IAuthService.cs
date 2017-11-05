@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using BasicInfrastructure.Service;
 
 namespace BasicInfrastructureAuthentication
@@ -9,5 +10,7 @@ namespace BasicInfrastructureAuthentication
         Task<IAuthToken> Authenticate(IAuthable user);
         Task<IAuthToken> Authenticate(IAuthToken token);
         Task<IAuthToken> Authenticate(IAuthToken token, string controller, string action);
+        Task<bool> ChangePasswordRequest(string login);
+        Task<IAuthToken> ChangePassword(ChangePasswordViewModel changePasswordViewModel);
     }
 }
