@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using BasicInfrastructure.Persistence;
 using BasicInfrastructure.Service;
+using BasicInfrastructureAuthentication.Exception;
 using BasicInfrastructureExtensions.Extensions;
 
 namespace BasicInfrastructureAuthentication
@@ -92,15 +94,19 @@ namespace BasicInfrastructureAuthentication
             if (user == null)
                 return false;
 
+            var oldTokenExists = (await _changePasswordService.GetAll()).Any(x => x.User.Id == user.Id);
+            if (oldTokenExists)
+                throw new ChangePasswordTokenAlreadyExistsException();
+
             var pwdToken = new ChangePasswordToken
-            {
-                User = user,
-                CreationTime = DateTime.Now,
-                Token = Guid.NewGuid()
-            };
+                {
+                    User = user,
+                    CreationTime = DateTime.Now,
+                    Token = Guid.NewGuid()
+                };
+            
             pwdToken = await _changePasswordService.Add(pwdToken);
             //TODO Send email
-            //TODO Use already active token
             //TODO Remove old otkens
 
             return true;
@@ -111,11 +117,16 @@ namespace BasicInfrastructureAuthentication
             if (changePasswordViewModel.Password != changePasswordViewModel.PasswordConfirmation)
                 throw new AuthenticationException();
 
-            //TODO Limit token to 24hours
             var token = (await _changePasswordService.GetAll()).SingleOrDefault(
                 x => x.Token.ToString() == changePasswordViewModel.Token.ToString());
             if (token == null)
                 throw new AuthenticationException();
+
+            if (token.CreationTime.AddDays(1d).CompareTo(DateTime.Now) < 0)
+            {
+                await _changePasswordService.Delete(token);
+                throw new ChangePasswordTokenExpiredException();
+            }
 
             var user = token.User;
             user.Password.SetValue(changePasswordViewModel.Password);

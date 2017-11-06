@@ -21,7 +21,7 @@ namespace BasicInfrastructureAuthentication
 
         public bool IsValid(DateTime? when = null)
         {
-            return DateTime.Compare((when ?? DateTime.Now), LastTouch.AddMinutes(RenewInterval)) < 0;
+            return DateTime.Compare(when ?? DateTime.Now, LastTouch.AddMinutes(RenewInterval)) < 0;
         }
     }
 }

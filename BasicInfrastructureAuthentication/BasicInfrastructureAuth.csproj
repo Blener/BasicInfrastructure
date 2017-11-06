@@ -48,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthContext.cs" />
+    <Compile Include="Exception\ChangePasswordTokenExpiredException.cs" />
+    <Compile Include="Exception\ChangePasswordTokenAlreadyExistsException.cs" />
     <Compile Include="IAuthService.cs" />
     <Compile Include="TokenService.cs" />
     <Compile Include="ITokenService.cs" />
