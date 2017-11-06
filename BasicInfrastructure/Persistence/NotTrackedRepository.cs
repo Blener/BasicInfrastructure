@@ -13,12 +13,12 @@ namespace BasicInfrastructure.Persistence
             : base(context)
         {
         }
-     
+
         public IQueryable<T> Items { get { lock (_locker) { return _context.Set<T>().AsNoTracking(); } } }
 
-        public virtual async Task<IQueryable<T>> GetAll(IRequestParameters<T> request)
+        public virtual IQueryable<T> GetAll(IRequestParameters<T> request)
         {
-            return await Task.Run(() => request?.GetQuery(Items) ?? Items);
+            return request?.GetQuery(Items) ?? Items;
         }
     }
 }

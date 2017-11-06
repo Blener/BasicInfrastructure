@@ -5,7 +5,7 @@ using BasicInfrastructure.Persistence;
 
 namespace BasicInfrastructure.Service
 {
-    public class ReadOnlyService<T> : IReadOnlyService<T> 
+    public class ReadOnlyService<T> : IReadOnlyService<T>
         where T : Entity
     {
         protected IRepository<T> Repository;
@@ -17,12 +17,12 @@ namespace BasicInfrastructure.Service
 
         public virtual async Task<IQueryable<T>> GetAll(IRequestParameters<T> request = null)
         {
-            return await Repository.GetAll(request);
+            return Repository.GetAll(request);
         }
 
         public virtual async Task<T> Get(int id)
         {
-            return await Repository.Get(id);
+            return Repository.Get(id);
         }
     }
 }

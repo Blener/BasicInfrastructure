@@ -7,6 +7,6 @@ namespace BasicInfrastructure.Persistence
     public interface IRepository<T> : IBaseRepository<T>
         where T : Entity
     {
-        Task<IQueryable<T>> GetAll(IRequestParameters<T> request);
+        IQueryable<T> GetAll(IRequestParameters<T> request);
     }
 }

@@ -19,30 +19,30 @@ namespace BasicInfrastructure.Persistence
             this._context = context;
         }
 
-        public async Task<T> Get(int id)
+        public T Get(int id)
         {
-            return await _context.Set<T>().SingleOrDefaultAsync(x => x.Id == id);
+            return _context.Set<T>().SingleOrDefault(x => x.Id == id);
         }
 
-        public async Task<T> Add(T entity)
+        public T Add(T entity)
         {
             var item = _context.Set<T>().Add(entity);
-            await Save();
+            Save();
             return item;
         }
 
-        public async Task<ICollection<T>> Add(ICollection<T> entity)
+        public ICollection<T> Add(ICollection<T> entity)
         {
             var list = new Collection<T>();
             foreach (var item in entity)
             {
-                list.Add(await Add(item));
+                list.Add(Add(item));
             }
-            await Save();
+            Save();
             return list;
         }
 
-        public async Task<T> Update(T entity)
+        public T Update(T entity)
         {
             var item = _context.Entry(entity);
             var returnItem = item.Entity;
@@ -64,29 +64,29 @@ namespace BasicInfrastructure.Persistence
                     returnItem = item.Entity;
                 }
             }
-            await Save();
+            Save();
             return returnItem;
         }
 
-        public async Task<bool> Delete(T entity)
+        public bool Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
-            await Save();
+            Save();
             return true;
         }
 
-        public async Task<bool> Delete(int id)
+        public bool Delete(int id)
         {
-            var item = await _context.Set<T>().SingleOrDefaultAsync(x => x.Id == id);
+            var item = _context.Set<T>().SingleOrDefault(x => x.Id == id);
             if (item == null)
                 return false;
 
-            return await Delete(item);
+            return Delete(item);
         }
 
-        public async Task<int> Save()
+        public int Save()
         {
-            return await _context.SaveChangesAsync();
+            return _context.SaveChanges();
         }
 
         public void Dispose()

@@ -23,7 +23,6 @@ namespace BasicInfrastructureAuthentication
         private async Task RemoveCurrentTokens(IAuthToken entity)
         {
             var currentTokens = (await GetAll()).Where(x => x.RenewInterval > 0 && x.UserId == entity.UserId);
-            //TODO Verificar porque este foreach está com concorrência
             await currentTokens.ForEachAsync(async x => await Delete(x));
         }
 

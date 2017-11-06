@@ -16,9 +16,9 @@ namespace BasicInfrastructure.Persistence
 
         public IQueryable<T> Items { get { lock (_locker) { return _context.Set<T>(); } } }
 
-        public virtual async Task<IQueryable<T>> GetAll(IRequestParameters<T> request = default)
+        public virtual IQueryable<T> GetAll(IRequestParameters<T> request = default)
         {
-            return await Task.Run(() => request?.GetQuery(Items) ?? Items);
+            return request?.GetQuery(Items) ?? Items;
         }
     }
 }

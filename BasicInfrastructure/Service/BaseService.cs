@@ -15,19 +15,19 @@ namespace BasicInfrastructure.Service
         public virtual async Task<T> Add(T entity)
         {
             OnBeforeAdd(entity);
-            entity = await Repository.Add(entity);
+            entity = Repository.Add(entity);
             OnAfterAdd(entity);
             var r = entity;
             return r;
         }
 
-        public virtual async Task<T> Update(T entity, int? id = null )
+        public virtual async Task<T> Update(T entity, int? id = null)
         {
             if (id.HasValue)
                 entity.Id = id.Value;
 
             OnBeforeUpdate(entity);
-            entity = await Repository.Update(entity);
+            entity = Repository.Update(entity);
             OnAfterUpdate(entity);
             var r = entity;
             return r;
@@ -36,14 +36,14 @@ namespace BasicInfrastructure.Service
         public virtual async Task<bool> Delete(T entity)
         {
             OnBeforeDelete(entity);
-            var r = await Repository.Delete(entity);
+            var r = Repository.Delete(entity);
             OnAfterDelete(entity);
             return r;
         }
 
         public virtual async Task<bool> Delete(int id)
         {
-            return await Repository.Delete(id);
+            return Repository.Delete(id);
         }
 
         protected virtual void OnBeforeAdd(T entity)
