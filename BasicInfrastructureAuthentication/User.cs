@@ -10,9 +10,10 @@ namespace BasicInfrastructureAuthentication
         public string Login { get; set; }
         public string Password { get; set; }
     }
-    public class ChangePasswordViewModel
+    public class ChangePasswordViewModel : IAuthable
     {
         public Guid Token { get; set; }
+        public string Login { get; set; }
         public string Password { get; set; }
         public string PasswordConfirmation { get; set; }
     }
@@ -22,6 +23,8 @@ namespace BasicInfrastructureAuthentication
         public Guid Token { get; set; }
         public DateTime CreationTime { get; set; }
         public virtual User User { get; set; }
+
+        public bool IsValid() => CreationTime.AddDays(1d).CompareTo(DateTime.Now) > 0;
     }
 
     public class User : Entity
@@ -34,9 +37,7 @@ namespace BasicInfrastructureAuthentication
     public class Password : Entity
     {
         public Password()
-        {
-            CreationDate = DateTime.Now;
-        }
+            => CreationDate = DateTime.Now;
 
         public void SetValue(string value)
         {

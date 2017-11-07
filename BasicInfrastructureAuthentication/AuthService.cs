@@ -92,11 +92,16 @@ namespace BasicInfrastructureAuthentication
         {
             var user = await GetByLogin(login);
             if (user == null)
-                return false;
+                throw new AuthenticationException();
 
-            var oldTokenExists = (await _changePasswordService.GetAll()).Any(x => x.User.Id == user.Id);
-            if (oldTokenExists)
-                throw new ChangePasswordTokenAlreadyExistsException();
+            var oldToken = (await _changePasswordService.GetAll()).SingleOrDefault(x => x.User.Id == user.Id);
+            if (oldToken != null) {
+                if (!oldToken.IsValid())
+                    await _changePasswordService.Delete(oldToken);
+                else
+                    //TODO Trocar por reenviar email
+                    throw new ChangePasswordTokenAlreadyExistsException();
+            }
 
             var pwdToken = new ChangePasswordToken
                 {
@@ -107,7 +112,6 @@ namespace BasicInfrastructureAuthentication
             
             pwdToken = await _changePasswordService.Add(pwdToken);
             //TODO Send email
-            //TODO Remove old otkens
 
             return true;
         }
@@ -119,10 +123,10 @@ namespace BasicInfrastructureAuthentication
 
             var token = (await _changePasswordService.GetAll()).SingleOrDefault(
                 x => x.Token.ToString() == changePasswordViewModel.Token.ToString());
-            if (token == null)
+            if (token == null || !token.User.Login.EqualsIgnoreCase(changePasswordViewModel.Login))
                 throw new AuthenticationException();
 
-            if (token.CreationTime.AddDays(1d).CompareTo(DateTime.Now) < 0)
+            if (!token.IsValid())
             {
                 await _changePasswordService.Delete(token);
                 throw new ChangePasswordTokenExpiredException();

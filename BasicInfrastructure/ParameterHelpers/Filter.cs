@@ -2,6 +2,7 @@
 using System.Linq;
 using BasicInfrastructure.Extensions;
 using BasicInfrastructure.Persistence;
+using BasicInfrastructureExtensions.Extensions;
 
 namespace BasicInfrastructure.ParameterHelpers
 {
@@ -27,12 +28,12 @@ namespace BasicInfrastructure.ParameterHelpers
                 case "equals":
                     return query.Where(x =>
                         prop.GetValue(x).ToString()
-                            .Equals(Value, StringComparison.InvariantCulture));
+                            .Equals(Value));
                 case "eqi":
                 case "equalsInsentitive":
                     return query.Where(x =>
                         prop.GetValue(x).ToString()
-                            .Equals(Value, StringComparison.InvariantCultureIgnoreCase));
+                            .EqualsIgnoreCase(Value));
                 case "eqn":
                 case "equalsNumber":
                     //TODO Tolerance Configuration for double comparison
@@ -46,28 +47,28 @@ namespace BasicInfrastructure.ParameterHelpers
                 case "cti":
                 case "containsInsensitive":
                     return query.Where(x =>
-                        prop.GetValue(x).ToString().ToLower()
-                            .Contains(Value.ToLower()));
+                        prop.GetValue(x).ToString()
+                            .ContainsIgnoreCase(Value));
                 case "sw":
                 case "startsWith":
                     return query.Where(x =>
                         prop.GetValue(x).ToString()
-                            .StartsWith(Value, StringComparison.InvariantCulture));
+                            .StartsWith(Value));
                 case "swi":
                 case "startsWithInsensitive":
                     return query.Where(x =>
                         prop.GetValue(x).ToString()
-                            .StartsWith(Value, StringComparison.InvariantCultureIgnoreCase));
+                            .StartsWithIgnoreCase(Value));
                 case "ew":
                 case "endsWith":
                     return query.Where(x =>
                         prop.GetValue(x).ToString()
-                            .EndsWith(Value, StringComparison.InvariantCulture));
+                            .EndsWith(Value));
                 case "ewi":
                 case "endsWithInsensitive":
                     return query.Where(x =>
                         prop.GetValue(x).ToString()
-                            .EndsWith(Value, StringComparison.InvariantCultureIgnoreCase));
+                            .EndsWithIgnoreCase(Value));
                 case "gt":
                 case "greatherThan":
                     return query.Where(x =>

@@ -302,14 +302,37 @@ namespace BasicInfrastructureExtensions.Extensions
             }
             catch
             {
-                if(defaultValue.HasValue)                
+                if (defaultValue.HasValue)
                     return defaultValue.Value;
 
                 throw;
             }
         }
-		
-		[DebuggerStepThrough]
+
+
+        [DebuggerStepThrough]
+        public static bool EqualsIgnoreCase(this string s, string value)
+        {
+            return s.Equals(value, StringComparison.InvariantCultureIgnoreCase);
+        }
+        [DebuggerStepThrough]
+        public static bool ContainsIgnoreCase(this string s, string value)
+        {
+            return s.ToLowerInvariant().Contains(value.ToLowerInvariant());
+        }
+        [DebuggerStepThrough]
+        public static bool StartsWithIgnoreCase(this string s, string value)
+        {
+            return s.StartsWith(value, StringComparison.InvariantCultureIgnoreCase);
+        }
+        [DebuggerStepThrough]
+        public static bool EndsWithIgnoreCase(this string s, string value)
+        {
+            return s.EndsWith(value, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+
+        [DebuggerStepThrough]
         public static string RemoveStringTags(this string text)
         {
             return text.Replace("\\n", ((char)10).ToString())
