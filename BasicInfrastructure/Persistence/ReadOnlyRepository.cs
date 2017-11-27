@@ -5,13 +5,16 @@ using BasicInfrastructure.ParameterHelpers;
 
 namespace BasicInfrastructure.Persistence
 {
-    public class Repository<T, D> : BaseRepository<T, D>, IRepository<T>
+    public class ReadOnlyRepository<T, D> : IReadOnlyRepository<T>
         where T : Entity
         where D : DbContext
     {
-        public Repository(D context)
-            : base(context)
+        protected static object _locker = new object();
+        protected readonly D _context;
+
+        public ReadOnlyRepository(D context)
         {
+            _context = context;
         }
 
         public IQueryable<T> Items { get { lock (_locker) { return _context.Set<T>(); } } }
@@ -19,6 +22,10 @@ namespace BasicInfrastructure.Persistence
         public virtual IQueryable<T> GetAll(IRequestParameters<T> request = default)
         {
             return request?.GetQuery(Items) ?? Items;
+        }
+        public T Get(int id)
+        {
+            return Items.SingleOrDefault(x => x.Id == id);
         }
     }
 }

@@ -9,7 +9,7 @@ using BasicInfrastructureExtensions.Helpers;
 
 namespace BasicInfrastructureExtensions.Extensions
 {
-    
+
     public static class StringExtensions
     {
         [DebuggerStepThrough]
@@ -17,95 +17,95 @@ namespace BasicInfrastructureExtensions.Extensions
         {
             return stringValues.Any(otherValue => String.CompareOrdinal(value, otherValue) == 0);
         }
-        
+
         [DebuggerStepThrough]
         public static T ToEnum<T>(this string value)
             where T : struct
         {
             return (T)Enum.Parse(typeof(T), value, true);
         }
-        
+
         [DebuggerStepThrough]
         public static string Right(this string value, int length)
         {
             return value != null && value.Length > length ? value.Substring(value.Length - length) : value;
         }
-        
+
         [DebuggerStepThrough]
         public static string Left(this string value, int length)
         {
             return value != null && value.Length > length ? value.Substring(0, length) : value;
         }
-        
+
         [DebuggerStepThrough]
         public static string ExtractNumbers(this string value)
         {
             return value == null ? null : string.Join(null, Regex.Split(value, "[^\\d]"));
         }
-        
+
         [DebuggerStepThrough]
         public static string Format(this string value, object arg0)
         {
             return string.Format(value, arg0);
         }
-        
+
         [DebuggerStepThrough]
         public static string Format(this string value, params object[] args)
         {
             return string.Format(value, args);
         }
-        
+
         [DebuggerStepThrough]
         public static string FormatNumber(this string value, string pattern)
         {
             var number = long.Parse(ExtractNumbers(value));
-        
+
             return string.Format(pattern, number);
         }
-        
+
         [DebuggerStepThrough]
         public static bool IsCEP(this string value)
         {
             return !value.IsEmpty() && (Regex.IsMatch(value, @"^\d{2}.\d{3}-\d{3}$") || Regex.IsMatch(value, @"^\d{5}-\d{3}$") || Regex.IsMatch(value, @"^\d{8}$"));
         }
-        
+
         [DebuggerStepThrough]
         public static bool IsURL(this string value)
         {
             return Regex.IsMatch(value, @"http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?");
         }
-        
+
         [DebuggerStepThrough]
         public static bool IsCPF(this string source)
         {
             return Cpf.Validar(source);
         }
-        
+
         [DebuggerStepThrough]
         public static bool IsEmpty(this string value)
         {
             return string.IsNullOrEmpty(value.NullSafe());
         }
-        
+
         [DebuggerStepThrough]
         public static string IsEmpty(this string value, string defaultValue)
         {
             return string.IsNullOrEmpty(value.NullSafe()) ? defaultValue : value;
         }
-        
+
         [DebuggerStepThrough]
         public static string NullSafe(this string value)
         {
             return (value ?? string.Empty).Trim();
         }
-        
+
         [DebuggerStepThrough]
         public static bool IsEmail(this string s)
         {
             var regex = new Regex(@"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$");
             return regex.IsMatch(s);
         }
-        
+
         [DebuggerStepThrough]
         public static bool IsCNPJ(this string source)
         {
@@ -117,13 +117,17 @@ namespace BasicInfrastructureExtensions.Extensions
         {
             return source.IsCNPJ() || source.IsCPF();
         }
-        
+
         [DebuggerStepThrough]
         public static string ToSeparatedWords(this string value)
         {
-            return Regex.Replace(value, "([A-Z][a-z])", " $1").Trim();
+            value = Regex.Replace(value, "([_]|[-])([A-Z]|[a-z])", " $2").Trim();
+            value = Regex.Replace(value, "(?<=[^ ])([A-Z][a-z])", " $1").Trim();
+            return value;
         }
-        
+
+
+
         [DebuggerStepThrough]
         public static string FormatCpfOrCnpj(this string source)
         {
@@ -134,37 +138,37 @@ namespace BasicInfrastructureExtensions.Extensions
 
             return source;
         }
-        
+
         [DebuggerStepThrough]
         public static string FormatCPF(this string source)
         {
             if (source.IsEmpty()) return source;
 
             var cpf = long.Parse(source.ExtractNumbers());
-        
+
             return string.Format(@"{0:000\.000\.000\-00}", cpf);
         }
-        
+
         [DebuggerStepThrough]
         public static string FormatCNPJ(this string source)
         {
             if (source.IsEmpty()) return source;
 
             var cnpj = long.Parse(source.ExtractNumbers());
-        
+
             return string.Format(@"{0:00\.000\.000\/0000\-00}", cnpj);
         }
-        
+
         [DebuggerStepThrough]
         public static string FormatCEP(this string source)
         {
             if (source.IsEmpty()) return source;
 
             var cep = long.Parse(source.ExtractNumbers());
-        
+
             return string.Format(@"{0:00000\-000}", cep);
         }
-        
+
         [DebuggerStepThrough]
         public static string FormatPhone(this string source)
         {
@@ -173,18 +177,18 @@ namespace BasicInfrastructureExtensions.Extensions
             var phone = long.Parse(source.ExtractNumbers());
 
             if (phone.ToString().Length == 10) return string.Format(@"{0:(##)####-####}", phone);
-        
+
             return string.Format(@"{0:(##)####-#####}", phone);
         }
-        
+
         [DebuggerStepThrough]
         public static bool IsNumeric(this string source)
         {
             long lng;
-        
+
             return long.TryParse(source, out lng);
         }
-        
+
         [DebuggerStepThrough]
         public static string Sanitize(this string source)
         {
@@ -209,16 +213,16 @@ namespace BasicInfrastructureExtensions.Extensions
                          .Replace("´", string.Empty)
                          .Replace("`", string.Empty);
         }
-        
+
         [DebuggerStepThrough]
         public static byte[] GetFileData(this string fileName, string filePath)
         {
             var fullFilePath = string.Format("{0}/{1}", filePath, fileName);
             if (!File.Exists(fullFilePath)) throw new FileNotFoundException("The file does not exist.", fullFilePath);
-        
+
             return File.ReadAllBytes(fullFilePath);
         }
-        
+
         [DebuggerStepThrough]
         public static string NormalizeString(this string source)
         {
@@ -229,19 +233,19 @@ namespace BasicInfrastructureExtensions.Extensions
                 var uc = CharUnicodeInfo.GetUnicodeCategory(ch);
                 if (uc != UnicodeCategory.NonSpacingMark) sb.Append(ch);
             }
-        
+
             return sb.ToString();
         }
-        
+
         [DebuggerStepThrough]
         public static Guid ToGuid(this string target)
         {
             var result = Guid.Empty;
-            
+
             if ((!string.IsNullOrEmpty(target)) && (target.Trim().Length == 22))
             {
                 var encoded = string.Concat(target.Trim().Replace("-", "+").Replace("_", "/"), "==");
-                
+
                 try
                 {
                     var base64 = Convert.FromBase64String(encoded);
@@ -251,7 +255,7 @@ namespace BasicInfrastructureExtensions.Extensions
                 {
                 }
             }
-        
+
             return result;
         }
 
@@ -307,6 +311,57 @@ namespace BasicInfrastructureExtensions.Extensions
 
                 throw;
             }
+        }
+
+        public static double ToDouble(this string str, double? defaultValue = null)
+        {
+            try
+            {
+                var d = double.Parse(str);
+                if( d.IsNanOrInfinity())
+                    throw new FormatException();
+                return d;
+            }
+            catch
+            {
+                if (defaultValue.HasValue)
+                    return defaultValue.Value;
+
+                throw;
+            }
+        }
+
+        public static bool IsNanOrInfinity(this double value)
+        {
+            return double.IsNaN(value) || double.IsInfinity(value);
+        }
+
+        [DebuggerStepThrough]
+        public static long ToLong(this string str, long? defaultValue = null)
+        {
+            try
+            {
+                return long.Parse(str);
+            }
+            catch
+            {
+                if (defaultValue.HasValue)
+                    return defaultValue.Value;
+
+                throw;
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static long ToDateTimeTicks(this string str)
+        {
+            return DateTime.Parse(str).Ticks;
+        }
+
+        [DebuggerStepThrough]
+        public static DateTime ToDateTime(this string str)
+        {
+            return DateTime.Parse(str);
         }
 
 

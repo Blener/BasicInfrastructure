@@ -18,6 +18,12 @@ namespace BasicInfrastructureExtensions.Extensions
             }
             return dictionary;
         }
+        public static IEnumerable<KeyValuePair<string, object>> ToKeyValuePairs(this object @object)
+        {
+            if (@object != null)
+                foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(@object))
+                    yield return new KeyValuePair<string, object>(property.Name.Replace("_", "-"), property.GetValue(@object));
+        }
 
         public static object GetValue(this object model, string property)
         {

@@ -75,19 +75,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\HandleExceptionAttribute.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="ParameterHelpers\PagedResult.cs" />
     <Compile Include="Extensions\PagedResultExtensions.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="ParameterHelpers\Filter.cs" />
     <Compile Include="ParameterHelpers\IFilter.cs" />
     <Compile Include="ParameterHelpers\IRequestParameters.cs" />
     <Compile Include="ParameterHelpers\RequestParameters.cs" />
     <Compile Include="Persistence\BaseRepository.cs" />
     <Compile Include="Persistence\Entity.cs" />
-    <Compile Include="Persistence\IBaseRepository.cs" />
     <Compile Include="Persistence\IRepository.cs" />
+    <Compile Include="Persistence\IReadOnlyRepository.cs" />
     <Compile Include="Persistence\NotTrackedRepository.cs" />
-    <Compile Include="Persistence\Repository.cs" />
+    <Compile Include="Persistence\ReadOnlyRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\AppContext.cs" />
     <Compile Include="Service\ReadOnlyService.cs" />

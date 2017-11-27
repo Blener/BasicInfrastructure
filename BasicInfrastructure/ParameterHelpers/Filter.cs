@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using BasicInfrastructure.Extensions;
 using BasicInfrastructure.Persistence;
 using BasicInfrastructureExtensions.Extensions;
 
@@ -11,7 +10,7 @@ namespace BasicInfrastructure.ParameterHelpers
         public string Field { get; set; }
         public string Operation { get; set; }
         public string Value { get; set; }
-        public IQueryable<T> GetQuery(IQueryable<T> query)
+        public virtual IQueryable<T> GetQuery(IQueryable<T> query)
         {
             if (Field == null)
                 throw new ArgumentNullException(nameof(Field));

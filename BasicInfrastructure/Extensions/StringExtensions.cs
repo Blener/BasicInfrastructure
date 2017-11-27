@@ -91,7 +91,9 @@ namespace BasicInfrastructure.Extensions
         [DebuggerStepThrough]
         public static string ToSeparatedWords(this string value)
         {
-            return Regex.Replace(value, "([A-Z][a-z])", " $1").Trim();
+            value = Regex.Replace(value, "([_]|[-])([A-Z]|[a-z])", " $2").Trim();
+            value = Regex.Replace(value, "(?<=[^ ])([A-Z][a-z])", " $1").Trim();
+            return value;
         }
 
         [DebuggerStepThrough]
@@ -242,6 +244,40 @@ namespace BasicInfrastructure.Extensions
                 throw;
             }
         }
+
+        public static bool IsNanOrInfinity(this double value)
+        {
+            return double.IsNaN(value) || double.IsInfinity(value);
+        }
+
+        [DebuggerStepThrough]
+        public static DateTime ToDateTime(this string str)
+        {
+            return DateTime.Parse(str);
+        }
+
+
+        [DebuggerStepThrough]
+        public static bool EqualsIgnoreCase(this string s, string value)
+        {
+            return s.Equals(value, StringComparison.InvariantCultureIgnoreCase);
+        }
+        [DebuggerStepThrough]
+        public static bool ContainsIgnoreCase(this string s, string value)
+        {
+            return s.ToLowerInvariant().Contains(value.ToLowerInvariant());
+        }
+        [DebuggerStepThrough]
+        public static bool StartsWithIgnoreCase(this string s, string value)
+        {
+            return s.StartsWith(value, StringComparison.InvariantCultureIgnoreCase);
+        }
+        [DebuggerStepThrough]
+        public static bool EndsWithIgnoreCase(this string s, string value)
+        {
+            return s.EndsWith(value, StringComparison.InvariantCultureIgnoreCase);
+        }
+
 
         [DebuggerStepThrough]
         public static long ToDateTimeTicks(this string str)

@@ -1,12 +1,17 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using BasicInfrastructure.ParameterHelpers;
 
 namespace BasicInfrastructure.Persistence
 {
-    public interface IRepository<T> : IBaseRepository<T>
+    public interface IRepository<T> : IReadOnlyRepository<T>
         where T : Entity
     {
-        IQueryable<T> GetAll(IRequestParameters<T> request);
+        T Add(T entity);
+        ICollection<T> Add(ICollection<T> entity);
+        T Update(T entity);
+        bool Delete(T entity);
+        bool Delete(int id);
+        int Save();
     }
 }

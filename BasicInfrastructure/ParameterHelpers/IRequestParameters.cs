@@ -6,8 +6,8 @@ namespace BasicInfrastructure.ParameterHelpers
 {
     public interface IRequestParameters<T> where T : Entity
     {
-        int PageId { get; set; }
-        int PerPage { get; set; }
+        int? PageId { get; set; }
+        int? PerPage { get; set; }
         string SortField { get; set; }
         bool? SortDirection { get; set; }
         int ItemCount { get; set; }

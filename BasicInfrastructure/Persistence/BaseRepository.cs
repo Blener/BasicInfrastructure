@@ -7,28 +7,24 @@ using System.Threading.Tasks;
 
 namespace BasicInfrastructure.Persistence
 {
-    public class BaseRepository<T, D> : IBaseRepository<T>
+    public class Repository<T, D> : ReadOnlyRepository<T, D>, IRepository<T>
         where T : Entity
         where D : DbContext
     {
-        protected static object _locker = new object();
-        protected readonly D _context;
 
-        public BaseRepository(D context)
+        public Repository(D context) : base(context)
         {
-            this._context = context;
         }
 
-        public T Get(int id)
-        {
-            return _context.Set<T>().SingleOrDefault(x => x.Id == id);
-        }
 
         public T Add(T entity)
         {
-            var item = _context.Set<T>().Add(entity);
-            Save();
-            return item;
+            lock (_locker)
+            {
+                var item = _context.Set<T>().Add(entity);
+                Save();
+                return item;
+            }
         }
 
         public ICollection<T> Add(ICollection<T> entity)
@@ -44,54 +40,65 @@ namespace BasicInfrastructure.Persistence
 
         public T Update(T entity)
         {
-            var item = _context.Entry(entity);
-            var returnItem = item.Entity;
-
-            if (item.State == EntityState.Detached)
+            lock (_locker)
             {
-                var set = _context.Set<T>();
-                var attachedEntity = set.Local.SingleOrDefault(x => x.Id == entity.Id);
+                var item = _context.Entry(entity);
+                var returnItem = item.Entity;
 
-                if (attachedEntity != null)
+                if (item.State == EntityState.Detached)
                 {
-                    var attachedEntry = _context.Entry(attachedEntity);
-                    attachedEntry.CurrentValues.SetValues(entity);
-                    returnItem = attachedEntity;
+                    var set = _context.Set<T>();
+                    var attachedEntity = set.Local.SingleOrDefault(x => x.Id == entity.Id);
+
+                    if (attachedEntity != null)
+                    {
+                        var attachedEntry = _context.Entry(attachedEntity);
+                        attachedEntry.CurrentValues.SetValues(entity);
+                        returnItem = attachedEntity;
+                    }
+                    else
+                    {
+                        item.State = EntityState.Modified;
+                        returnItem = item.Entity;
+                    }
                 }
-                else
-                {
-                    item.State = EntityState.Modified;
-                    returnItem = item.Entity;
-                }
+                Save();
+                return returnItem;
             }
-            Save();
-            return returnItem;
         }
 
         public bool Delete(T entity)
         {
-            _context.Set<T>().Remove(entity);
-            Save();
-            return true;
+            lock (_locker)
+            {
+                _context.Set<T>().Remove(entity);
+                Save();
+                return true;
+            }
         }
 
         public bool Delete(int id)
         {
-            var item = _context.Set<T>().SingleOrDefault(x => x.Id == id);
-            if (item == null)
-                return false;
+            lock (_locker)
+            {
+                var item = _context.Set<T>().SingleOrDefault(x => x.Id == id);
+                if (item == null)
+                    return false;
 
-            return Delete(item);
+                return Delete(item);
+            }
         }
 
         public int Save()
         {
-            return _context.SaveChanges();
+            lock (_locker)
+            {
+                return _context.SaveChanges();
+            }
         }
 
-        public void Dispose()
-        {
+        public void Dispose() =>
             GC.ReRegisterForFinalize(this);
-        }
+
     }
 }
