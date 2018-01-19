@@ -90,7 +90,7 @@ namespace BasicInfrastructurePersistence.Tests.Helpers
             _req.SortDirection = true;
             _req.SortField = "Contrato_Id";
 
-            var result = _req.GetQuery(_testList);
+            var result = _req.GetQuery(_testList, true);
             result.ShouldBe(_testList.OrderBy(x=> x.Contrato_Id)
                 .Skip( _req.PageId.Value * _req.PerPage.Value)
                 .Take(_req.PerPage.Value));
@@ -100,12 +100,39 @@ namespace BasicInfrastructurePersistence.Tests.Helpers
             _req.SortDirection = false;
             _req.SortField = "Contrato_Id";
 
-            result = _req.GetQuery(_testList);
+            result = _req.GetQuery(_testList, true);
             result.ShouldBe(_testList.OrderByDescending(x=> x.Contrato_Id)
                 .Skip(_req.PageId.Value * _req.PerPage.Value)
                 .Take(_req.PerPage.Value));
 
             _req.PageCount.ShouldBe(4);
+        }
+
+        [Fact]
+        public void MustGetOrderedQueryWithoutCountingItems()
+        {
+            _req.PageId = 1;
+            _req.PerPage = 5;
+
+            _req.SortDirection = true;
+            _req.SortField = "Contrato_Id";
+
+            var result = _req.GetQuery(_testList, false);
+            result.ShouldBe(_testList.OrderBy(x=> x.Contrato_Id)
+                .Skip( _req.PageId.Value * _req.PerPage.Value)
+                .Take(_req.PerPage.Value));
+            
+            _req.PageCount.ShouldBe(0);
+            
+            _req.SortDirection = false;
+            _req.SortField = "Contrato_Id";
+
+            result = _req.GetQuery(_testList);
+            result.ShouldBe(_testList.OrderByDescending(x=> x.Contrato_Id)
+                .Skip(_req.PageId.Value * _req.PerPage.Value)
+                .Take(_req.PerPage.Value));
+
+            _req.PageCount.ShouldBe(0);
         }
     }
 }

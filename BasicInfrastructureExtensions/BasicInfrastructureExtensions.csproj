@@ -89,6 +89,7 @@
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Helpers\ExifReader.cs" />
     <Compile Include="Helpers\FileSystemHelper.cs" />
+    <Compile Include="Helpers\Pis.cs" />
     <Compile Include="Helpers\ReflectionHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

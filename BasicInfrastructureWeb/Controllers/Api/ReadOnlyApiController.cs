@@ -18,14 +18,14 @@ namespace BasicInfrastructureWeb.Controllers.Api
 
         public ReadOnlyApiController(IReadOnlyService<T> service) => _service = service;
 
-        public virtual async Task<JsonResult<PagedResult<T>>> Get([FromUri] RequestParameters<T> request)
+        public virtual async Task<PagedResult<T>> Get([FromUri] RequestParameters<T> request)
         {
-            return Json(await _service.GetAll(request).ToPagedResultAsync(request));
+            return await _service.GetAll(request).ToPagedResultAsync(request);
         }
 
-        public virtual async Task<JsonResult<T>> Get(int? id)
+        public virtual async Task<T> Get(int id)
         {
-            return Json(await _service.Get(id.Value));
+            return await _service.Get(id);
         }
 
     }

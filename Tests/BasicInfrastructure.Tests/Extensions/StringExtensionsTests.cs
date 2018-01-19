@@ -257,5 +257,198 @@ namespace BasicInfrastructurePersistence.Tests.Extensions
         {
             value.ToSeparatedWords().ShouldBeEqual(value);
         }
+
+        [Theory]
+        [InlineData("36.320.880/0001-20")]
+        [InlineData("88.143.821/0001-28")]
+        [InlineData("67.232.732/0001-88")]
+        public void MustCnpjValidWithMask(string cnpjTest)
+        {
+            cnpjTest.IsCNPJ().ShouldBeTrue();
+            cnpjTest.IsCpfOrCnpj().ShouldBeTrue();
+        }
+
+        [Theory]
+        [InlineData("76748996000180")]
+        [InlineData("80836586000168")]
+        [InlineData("87738597000154")]
+        public void MustCnpjValidJustNumbers(string cnpjTest)
+        {
+            cnpjTest.IsCNPJ().ShouldBeTrue();
+            cnpjTest.IsCpfOrCnpj().ShouldBeTrue();
+        }
+        [Theory]
+        [InlineData("36.320.880/0001-20")]
+        [InlineData("88.143.821/0001-28")]
+        [InlineData("67.232.732/0001-88")]
+        [InlineData("")]
+        public void MustFormatCnpj(string cnpj)
+        {
+            cnpj.ExtractNumbers().FormatCNPJ().ShouldBeEqual(cnpj);
+        }
+
+        [Theory]
+        [InlineData("70.555.555/0001-93")]
+        [InlineData("34.43.64/0001-64")]
+        [InlineData("65.378.172@0001@49")]
+        [InlineData("55.555.555/5555-55")]
+        public void MustCnpjInvalidWithMask(string cnpjTest)
+        {
+            cnpjTest.IsCNPJ().ShouldBeFalse();
+            cnpjTest.IsCpfOrCnpj().ShouldBeFalse();
+        }
+        [Theory]
+        [InlineData("814547000178")]
+        [InlineData("520555555787000119")]
+        [InlineData("42693367999185")]
+        [InlineData("55555555555")]
+        public void MustCnpjInvalidJustNumbers(string cnpjTest)
+        {
+            cnpjTest.IsCNPJ().ShouldBeFalse();
+            cnpjTest.IsCpfOrCnpj().ShouldBeFalse();
+        }
+
+        [Theory]
+        [InlineData("482.496.596-94")]
+        [InlineData("948.843.518-60")]
+        [InlineData("689.173.690-06")]
+        public void MustCpfValidWithMask(string cpfTest)
+        {
+            cpfTest.IsCPF().ShouldBeTrue();
+            cpfTest.IsCpfOrCnpj().ShouldBeTrue();
+        }
+        [Theory]
+        [InlineData("482.496.596-94")]
+        [InlineData("948.843.518-60")]
+        [InlineData("689.173.690-06")]
+        [InlineData("")]
+        public void MustFormatCpf(string cpf)
+        {
+            cpf.ExtractNumbers().FormatCPF().ShouldBeEqual(cpf);
+        }
+        [Theory]
+        [InlineData("482.496.596-94")]
+        [InlineData("948.843.518-60")]
+        [InlineData("689.173.690-06")]
+        [InlineData("36.320.880/0001-20")]
+        [InlineData("88.143.821/0001-28")]
+        [InlineData("67.232.732/0001-88")]
+        [InlineData("")]
+        public void MustFormatCpfOrCnpj(string item)
+        {
+            item.ExtractNumbers().FormatCpfOrCnpj().ShouldBeEqual(item);
+        }
+
+        [Theory]
+        [InlineData("16812192635")]
+        [InlineData("65325255290")]
+        [InlineData("26954228818")]
+        public void MustCpfValidJustNumbers(string cpfTest)
+        {
+            cpfTest.IsCPF().ShouldBeTrue();
+            cpfTest.IsCpfOrCnpj().ShouldBeTrue();
+        }
+
+        [Theory]
+        [InlineData("373.871.-97")]
+        [InlineData("121.164.530")]
+        [InlineData("121.567.530-99")]
+        [InlineData("921.....530-ER")]
+        public void MustCpfInvalidWithMask(string cpfTest)
+        {
+            cpfTest.IsCPF().ShouldBeFalse();
+            cpfTest.IsCpfOrCnpj().ShouldBeFalse();
+        }
+        [Theory]
+        [InlineData("152892652")]
+        [InlineData("28134617412")]
+        [InlineData("78 95 13 16 50")]
+        public void MustCpfInvalidJustNumbers(string cpfTest)
+        {
+            cpfTest.IsCPF().ShouldBeFalse();
+            cpfTest.IsCpfOrCnpj().ShouldBeFalse();
+        }
+
+        [Theory]
+        [InlineData("219.77689.19-3")]
+        [InlineData("040.78525.77-5")]
+        [InlineData("511.90657.13-2")]
+        public void MustPisValidWithMask(string pisTest)
+        {
+            pisTest.IsPIS().ShouldBeTrue();
+        }
+
+        [Theory]
+        [InlineData("78807027118")]
+        [InlineData("27944141090")]
+        [InlineData("32216633212")]
+        public void MustPisValidJustNumbers(string pisTest)
+        {
+            pisTest.IsPIS().ShouldBeTrue();
+        }
+
+        [Theory]
+        [InlineData("939.78484.71-$")]
+        [InlineData("965.24304.36-4785")]
+        [InlineData("21.15452.85-0")]
+        [InlineData("226.59272.52-2")]
+        public void MustPisInvalidWithMask(string pisTest)
+        {
+            pisTest.IsPIS().ShouldBeFalse();
+        }
+
+        [Theory]
+        [InlineData("65171159888")]
+        [InlineData("7138525236")]
+        [InlineData("285911108065")]
+        public void MustPisInvalidJustNumbers(string pisTest)
+        {
+            pisTest.IsPIS().ShouldBeFalse();
+        }
+
+        [Theory]
+        [InlineData("27410280", "27410-280")]
+        [InlineData("80230010", "80230-010")]
+        [InlineData("", "")]
+        public void MustFormatCep(string value, string cep)
+        {
+            value.FormatCEP().ShouldBeEqual(cep);
+        }
+
+        [Theory]
+        [InlineData("27410-280")]
+        [InlineData("27410280")]
+        [InlineData("80230-010")]
+        [InlineData("80230010")]
+        public void MustValidateCep(string cep)
+        {
+            cep.IsCEP().ShouldBeTrue();
+        }
+
+        [Theory]
+        [InlineData("2741a-280")]
+        [InlineData("2741a280")]
+        [InlineData("802300-010")]
+        [InlineData("802300010")]
+        public void MustNotValidateCep(string cep)
+        {
+            cep.IsCEP().ShouldBeFalse();
+        }
+
+        [Theory]
+        [InlineData("haidf324h 23h4iuhaiuh2340)*(&* asdasd", "haidf324h23h4iuhaiuh2340asdasd")]
+        [InlineData(" !@#$\"%¨&*()_+=-'\\\t|/?;:.,][~`´{}§¬¢£³²¹°ºª/?", "")]
+        public void TestSanitize(string str, string exp)
+        {
+            str.Sanitize().ShouldBeEqual(exp);
+        }
+
+        [Theory]
+        [InlineData("haidf324h 23h4iuhaiuh2340)*(&* asdasd", "haidf324h 23h4iuhaiuh2340 asdasd")]
+        public void TestSanitizeIgnoreSpacing(string str, string exp)
+        {
+            str.Sanitize(true).ShouldBeEqual(exp);
+        }
+
     }
 }

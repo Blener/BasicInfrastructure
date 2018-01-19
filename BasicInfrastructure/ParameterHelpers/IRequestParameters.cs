@@ -15,6 +15,6 @@ namespace BasicInfrastructure.ParameterHelpers
 
         List<Filter<T>> Filters { get; set; }
 
-        IQueryable<T> GetQuery(IQueryable<T> query);
+        IQueryable<T> GetQuery(IQueryable<T> query, bool countItems = false);
     }
 }

@@ -16,14 +16,14 @@ namespace BasicInfrastructure.ParameterHelpers
         public int ItemCount { get; set; }
         public int PageCount { get; set; }
 
-        public virtual IQueryable<T> GetQuery(IQueryable<T> query)
+        public virtual IQueryable<T> GetQuery(IQueryable<T> query, bool countItems = false)
         {
             if (query == null)
                 return null;
 
             query = GetFiltersQuery(query);
             query = GetSortQuery(query);
-            query = GetPaginationQuery(query);
+            query = GetPaginationQuery(query, countItems);
 
             return query;
         }
@@ -50,13 +50,19 @@ namespace BasicInfrastructure.ParameterHelpers
             return query;
         }
 
-        protected virtual IQueryable<T> GetPaginationQuery(IQueryable<T> query)
+        protected virtual IQueryable<T> GetPaginationQuery(IQueryable<T> query, bool countItems = false)
         {
             PageId = PageId == null || PageId < 0 ? 0 : PageId;
             PerPage = PerPage == null || PerPage <= 0 ? 10 : PerPage;
 
-            ItemCount = query.Count();
-            PageCount = (int)Math.Ceiling(((decimal)ItemCount) / PerPage.Value);
+            ItemCount = 0;
+            PageCount = 0;
+            if (countItems)
+            {
+                ItemCount = query.Count();
+                PageCount = (int) Math.Ceiling(((decimal) ItemCount) / PerPage.Value);
+            }
+
             return query.Skip(PageId.Value * PerPage.Value).Take(PerPage.Value);
         }
     }

@@ -66,7 +66,8 @@ namespace BasicInfrastructureExtensions.Extensions
         [DebuggerStepThrough]
         public static bool IsCEP(this string value)
         {
-            return !value.IsEmpty() && (Regex.IsMatch(value, @"^\d{2}.\d{3}-\d{3}$") || Regex.IsMatch(value, @"^\d{5}-\d{3}$") || Regex.IsMatch(value, @"^\d{8}$"));
+            return !value.IsEmpty()
+                   && Regex.IsMatch(value, @"(^\d{2}[.]?\d{3}[-]?\d{3}$)");
         }
 
         [DebuggerStepThrough]
@@ -190,29 +191,12 @@ namespace BasicInfrastructureExtensions.Extensions
         }
 
         [DebuggerStepThrough]
-        public static string Sanitize(this string source)
-        {
-            if (source.IsEmpty()) return source;
-            return source.Replace(".", string.Empty)
-                         .Replace("_", string.Empty)
-                         .Replace(",", string.Empty)
-                         .Replace("/", string.Empty)
-                         .Replace("-", string.Empty)
-                         .Replace("!", string.Empty)
-                         .Replace("@", string.Empty)
-                         .Replace("#", string.Empty)
-                         .Replace("$", string.Empty)
-                         .Replace("%", string.Empty)
-                         .Replace("¨", string.Empty)
-                         .Replace("&", string.Empty)
-                         .Replace("*", string.Empty)
-                         .Replace("(", string.Empty)
-                         .Replace(")", string.Empty)
-                         .Replace("+", string.Empty)
-                         .Replace("=", string.Empty)
-                         .Replace("´", string.Empty)
-                         .Replace("`", string.Empty);
-        }
+        public static string Sanitize(this string source) 
+            => Regex.Replace(source, "[^a-zA-Z0-9]|\\s", "").Trim();
+
+        [DebuggerStepThrough]
+        public static string Sanitize(this string source, bool ignoreSpacing) 
+            => ignoreSpacing? Regex.Replace(source, "[^a-zA-Z0-9\\s]", "").Trim() : source.Sanitize();
 
         [DebuggerStepThrough]
         public static byte[] GetFileData(this string fileName, string filePath)
@@ -393,6 +377,11 @@ namespace BasicInfrastructureExtensions.Extensions
             return text.Replace("\\n", ((char)10).ToString())
                 .Replace("\\r", ((char)13).ToString())
                     .Replace("\\\"", ((char)34).ToString());
+        }
+        [DebuggerStepThrough]
+        public static bool IsPIS(this string text)
+        {
+            return Pis.Validate(text);
         }
     }
 }

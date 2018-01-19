@@ -13,19 +13,19 @@ namespace BasicInfrastructureWeb.Controllers.Api
         private readonly IService<T> _service;
         public BaseApiController(IService<T> service) : base(service) => _service = service;
 
-        public virtual async Task<JsonResult<T>> Post([FromBody] T value)
+        public virtual async Task<T> Post([FromBody] T value)
         {
-            return Json(await _service.Add(value));
+            return await _service.Add(value);
         }
 
-        public virtual async Task<JsonResult<T>> Put(int id, [FromBody] T value)
+        public virtual async Task<T> Put(int id, [FromBody] T value)
         {
-            return Json(await _service.Update(value, id));
+            return await _service.Update(value, id);
         }
 
-        public virtual async Task<JsonResult<bool>> Delete(int id)
+        public virtual async Task<bool> Delete(int id)
         {
-            return Json(await _service.Delete(id));
+            return await _service.Delete(id);
         }
 
     }
