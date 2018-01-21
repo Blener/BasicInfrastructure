@@ -65,7 +65,6 @@ namespace BasicInfrastructureAuthentication
         {
             var newToken = await Authenticate(token);
             return await _tokenService.Authorize(newToken, controller, action);
-
         }
 
         private async Task<IAuthToken> CreateToken(User user)

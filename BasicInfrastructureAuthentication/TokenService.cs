@@ -8,7 +8,7 @@ using BasicInfrastructureExtensions.Extensions;
 
 namespace BasicInfrastructureAuthentication
 {
-    public class TokenService: BaseService<AuthToken>, ITokenService
+    public class TokenService : BaseService<AuthToken>, ITokenService
     {
         public TokenService(IRepository<AuthToken> repository) : base(repository)
         {
