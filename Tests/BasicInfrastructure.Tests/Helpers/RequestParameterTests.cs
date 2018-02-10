@@ -87,8 +87,12 @@ namespace BasicInfrastructurePersistence.Tests.Helpers
             _req.PageId = 1;
             _req.PerPage = 5;
 
-            _req.SortDirection = true;
-            _req.SortField = "Contrato_Id";
+            _req.SortItems.Add(new SortItem<TestContrato>
+            {
+                SortDirection = true,
+                SortField = "Contrato_Id",
+                Priotity = 0
+            });
 
             var result = _req.GetQuery(_testList, true);
             result.ShouldBe(_testList.OrderBy(x=> x.Contrato_Id)
@@ -96,9 +100,13 @@ namespace BasicInfrastructurePersistence.Tests.Helpers
                 .Take(_req.PerPage.Value));
             
             _req.PageCount.ShouldBe(4);
-            
-            _req.SortDirection = false;
-            _req.SortField = "Contrato_Id";
+
+            _req.SortItems.Add(new SortItem<TestContrato>
+            {
+                SortDirection = false,
+                SortField = "Contrato_Id",
+                Priotity = 1
+        });
 
             result = _req.GetQuery(_testList, true);
             result.ShouldBe(_testList.OrderByDescending(x=> x.Contrato_Id)
@@ -114,25 +122,47 @@ namespace BasicInfrastructurePersistence.Tests.Helpers
             _req.PageId = 1;
             _req.PerPage = 5;
 
-            _req.SortDirection = true;
-            _req.SortField = "Contrato_Id";
+            _req.SortItems.Add(new SortItem<TestContrato>
+            {
+                SortDirection = true,
+                SortField = "Contrato_Id",
+                Priotity = 1
+            });
+            _req.SortItems.Add(new SortItem<TestContrato>
+            {
+                SortDirection = true,
+                SortField = "NumeroContrato",
+                Priotity = 0
+            });
+
 
             var result = _req.GetQuery(_testList, false);
-            result.ShouldBe(_testList.OrderBy(x=> x.Contrato_Id)
+            result.ShouldBe(_testList.OrderBy(x=>x.NumeroContrato).ThenBy(x=> x.Contrato_Id)
                 .Skip( _req.PageId.Value * _req.PerPage.Value)
                 .Take(_req.PerPage.Value));
             
-            _req.PageCount.ShouldBe(0);
-            
-            _req.SortDirection = false;
-            _req.SortField = "Contrato_Id";
+            _req.PageCount.ShouldBe(null);
+
+
+            _req.SortItems.Add(new SortItem<TestContrato>
+            {
+                SortDirection = false,
+                SortField = "Contrato_Id",
+                Priotity = 1
+            });
+            _req.SortItems.Add(new SortItem<TestContrato>
+            {
+                SortDirection = false,
+                SortField = "NumeroContrato",
+                Priotity = 0
+            });
 
             result = _req.GetQuery(_testList);
-            result.ShouldBe(_testList.OrderByDescending(x=> x.Contrato_Id)
+            result.ShouldBe(_testList.OrderByDescending(x=> x.NumeroContrato).ThenByDescending(x=> x.Contrato_Id)
                 .Skip(_req.PageId.Value * _req.PerPage.Value)
                 .Take(_req.PerPage.Value));
 
-            _req.PageCount.ShouldBe(0);
+            _req.PageCount.ShouldBe(null);
         }
     }
 }

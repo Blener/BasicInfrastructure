@@ -5,7 +5,7 @@ using BasicInfrastructureExtensions.Extensions;
 
 namespace BasicInfrastructure.ParameterHelpers
 {
-    public class Filter<T> : IFilter<T> where T : Entity
+    public class Filter<T> : IFilter<T>
     {
         public string Field { get; set; }
         public string Operation { get; set; }

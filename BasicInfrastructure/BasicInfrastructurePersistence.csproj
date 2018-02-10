@@ -24,7 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -76,12 +76,14 @@
   <ItemGroup>
     <Compile Include="Extensions\HandleExceptionAttribute.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="ParameterHelpers\ISortItem.cs" />
     <Compile Include="ParameterHelpers\PagedResult.cs" />
     <Compile Include="Extensions\PagedResultExtensions.cs" />
     <Compile Include="ParameterHelpers\Filter.cs" />
     <Compile Include="ParameterHelpers\IFilter.cs" />
     <Compile Include="ParameterHelpers\IRequestParameters.cs" />
     <Compile Include="ParameterHelpers\RequestParameters.cs" />
+    <Compile Include="ParameterHelpers\SortItem.cs" />
     <Compile Include="Persistence\BaseRepository.cs" />
     <Compile Include="Persistence\Entity.cs" />
     <Compile Include="Persistence\IRepository.cs" />

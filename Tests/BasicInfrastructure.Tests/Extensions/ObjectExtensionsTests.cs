@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BasicInfrastructureExtensions.Extensions;
 using BasicInfrastructurePersistence.Tests.TestEntities;
 using Xunit;
 using Xunit2.Should;
 
-namespace Amil.Sis.Common.Tests.Extensions
+namespace BasicInfrastructurePersistence.Tests.Extensions
 {
     public  class ObjectExtensionsTests
     {

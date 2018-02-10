@@ -4,11 +4,12 @@ using BasicInfrastructure.Persistence;
 namespace BasicInfrastructure.ParameterHelpers
 {
 
-    public interface IFilter<T>
+    public interface ISortItem<T>
     {
-        string Field { get; set; }
-        string Operation { get; set; }
-        string Value { get; set; }
+        string SortField { get; set; }
+        bool? SortDirection { get; set; }
+        int? Priotity { get; set; }
+
         IQueryable<T> GetQuery(IQueryable<T> query);
     }
 }
