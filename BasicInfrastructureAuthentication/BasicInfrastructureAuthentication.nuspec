@@ -2,14 +2,14 @@
 <package >
   <metadata>
     <id>tgarcia.Utils.BasicInfrastructure.Auth</id>
-    <version>0.3.0</version>
+    <version>0.4.0</version>
     <title>Basic Infrastructure Auth</title>
     <authors>Thiago Garcia</authors>
     <owners>Thiago Garcia</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Gives some default Authorization and Authetication to use with your web or webapi app. 
     Documentation comming soon.</description>
-    <releaseNotes>First release of Authentication and Authorization structure</releaseNotes>
+    <releaseNotes>Some Improvements</releaseNotes>
     <copyright>Copyright 2017</copyright>
     <tags>web api webapi</tags>
   </metadata>

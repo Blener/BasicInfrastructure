@@ -106,7 +106,7 @@
       <Name>BasicInfrastructureExtensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\BasicInfrastructure\BasicInfrastructurePersistence.csproj">
-      <Project>{71CF1569-D304-4AB1-9001-1A479B02ABEA}</Project>
+      <Project>{71cf1569-d304-4ab1-9001-1a479b02abea}</Project>
       <Name>BasicInfrastructurePersistence</Name>
     </ProjectReference>
   </ItemGroup>

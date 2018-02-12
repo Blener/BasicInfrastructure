@@ -80,7 +80,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\HandleExceptionAttribute.cs" />
-    <Compile Include="Extensions\PagedListResult.cs" />
+    <Compile Include="Extensions\PagedResult.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="ParameterHelpers\Filter.cs" />
     <Compile Include="ParameterHelpers\IFilter.cs" />

@@ -1,15 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.15
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicInfrastructure", "BasicInfrastructure\BasicInfrastructure.csproj", "{71CF1569-D304-4AB1-9001-1A479B02ABEA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{D6B7E04A-66ED-460B-951C-F312F688523F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicInfrastructure.Tests", "Tests\BasicInfrastructure.Tests\BasicInfrastructure.Tests.csproj", "{FCC103B4-18E2-4D65-A4A4-831C54A00053}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicInfrastructureWeb", "BasicInfrastructureWeb\BasicInfrastructureWeb.csproj", "{CAAC6D1F-8D81-4156-8217-9707FD38F3EF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicInfrastructureExtensions", "BasicInfrastructureExtensions\BasicInfrastructureExtensions.csproj", "{24E2C78E-CABA-400F-AB7C-512E8763E80E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1E2556C5-E643-4CD0-8940-876A1BE869CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicInfrastructureAuth", "BasicInfrastructureAuthentication\BasicInfrastructureAuth.csproj", "{8A3A6DD7-0CC9-44C1-A2CB-328EF063A961}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicInfrastructurePersistence", "BasicInfrastructure\BasicInfrastructurePersistence.csproj", "{71CF1569-D304-4AB1-9001-1A479B02ABEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,14 +21,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{71CF1569-D304-4AB1-9001-1A479B02ABEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71CF1569-D304-4AB1-9001-1A479B02ABEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71CF1569-D304-4AB1-9001-1A479B02ABEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71CF1569-D304-4AB1-9001-1A479B02ABEA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D6B7E04A-66ED-460B-951C-F312F688523F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D6B7E04A-66ED-460B-951C-F312F688523F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D6B7E04A-66ED-460B-951C-F312F688523F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D6B7E04A-66ED-460B-951C-F312F688523F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCC103B4-18E2-4D65-A4A4-831C54A00053}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCC103B4-18E2-4D65-A4A4-831C54A00053}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCC103B4-18E2-4D65-A4A4-831C54A00053}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCC103B4-18E2-4D65-A4A4-831C54A00053}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CAAC6D1F-8D81-4156-8217-9707FD38F3EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CAAC6D1F-8D81-4156-8217-9707FD38F3EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAAC6D1F-8D81-4156-8217-9707FD38F3EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -33,9 +33,20 @@ Global
 		{24E2C78E-CABA-400F-AB7C-512E8763E80E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24E2C78E-CABA-400F-AB7C-512E8763E80E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24E2C78E-CABA-400F-AB7C-512E8763E80E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A3A6DD7-0CC9-44C1-A2CB-328EF063A961}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A3A6DD7-0CC9-44C1-A2CB-328EF063A961}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A3A6DD7-0CC9-44C1-A2CB-328EF063A961}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A3A6DD7-0CC9-44C1-A2CB-328EF063A961}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71CF1569-D304-4AB1-9001-1A479B02ABEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71CF1569-D304-4AB1-9001-1A479B02ABEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71CF1569-D304-4AB1-9001-1A479B02ABEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71CF1569-D304-4AB1-9001-1A479B02ABEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FCC103B4-18E2-4D65-A4A4-831C54A00053} = {1E2556C5-E643-4CD0-8940-876A1BE869CD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D2A7BE92-6EAA-4C78-ADFC-3582765FA360}
