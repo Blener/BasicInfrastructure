@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using BasicInfrastructureExtensions.Extensions;
 using Xunit;
 using Xunit2.Should;
@@ -131,6 +132,165 @@ namespace BasicInfrastructurePersistence.Tests.Extensions
             var dateExpected = DateTime.Parse(expected);
 
             dateValue.FirstDayOfNextWeek().ShouldBe(dateExpected);
+        }
+        [Theory]
+        [InlineData("2017-01-01T01:00:00", "2017-01-01")]
+        [InlineData("2017-01-15", "2017-01-15")]
+        [InlineData("2017-03-02T12:33:21", "2017-03-02")]
+        public void MustReturnThisDay(string value, string expected)
+        {
+            var dateValue = DateTime.Parse(value);
+            var dateExpected = DateTime.Parse(expected);
+
+            dateValue.ThisDay().ShouldBe(dateExpected);
+        }
+        [Theory]
+        [InlineData("2017-01-01T01:00:00", "2017-01-02")]
+        [InlineData("2017-01-15", "2017-01-16")]
+        [InlineData("2017-03-02T12:33:21", "2017-03-03")]
+        [InlineData("2016-12-31T01:00:00", "2017-01-01")]
+
+        public void MustReturnNextDay(string value, string expected)
+        {
+            var dateValue = DateTime.Parse(value);
+            var dateExpected = DateTime.Parse(expected);
+
+            dateValue.NextDay().ShouldBe(dateExpected);
+        }
+        [Theory]
+        [InlineData("2017-01-01T01:00:00", "2016-12-31")]
+        [InlineData("2017-01-15", "2017-01-14")]
+        [InlineData("2017-03-02T12:33:21", "2017-03-01")]
+        public void MustReturnDayBefore(string value, string expected)
+        {
+            var dateValue = DateTime.Parse(value);
+            var dateExpected = DateTime.Parse(expected);
+
+            dateValue.DayBefore().ShouldBe(dateExpected);
+        }
+        [Theory]
+        [InlineData("2017-01-01T01:00:00",2)]
+        [InlineData("2017-01-15",0)]
+        [InlineData("2017-03-02T12:33:21",3)]
+        [InlineData("2018-02-02T12:33:21",10)]
+        public void MustReturnNextDays(string value, int days)
+        {
+            var startDate = DateTime.Parse(value);
+
+            var expectedList = new List<DateTime>();
+            for (int i = 0; i <= days; i++)
+                expectedList.Add(startDate.AddDays(i));
+
+            startDate.NextDays(days).ShouldBeEqual(expectedList);
+        }
+        [Theory]
+        [InlineData("2017-01-01T01:00:00",-2)]
+        [InlineData("2017-01-15",0)]
+        [InlineData("2017-03-02T12:33:21",-3)]
+        [InlineData("2018-02-02T12:33:21",-10)]
+        public void MustReturnDaysBefore(string value, int days)
+        {
+            var startDate = DateTime.Parse(value);
+
+            var expectedList = new List<DateTime>();
+            for (int i = 0; i >= days; i--)
+                expectedList.Add(startDate.AddDays(i));
+
+            startDate.NextDays(days).ShouldBeEqual(expectedList);
+        }
+        [Theory]
+        [InlineData("2017-01-01T01:00:00",2)]
+        [InlineData("2017-01-15",0)]
+        [InlineData("2017-03-02T12:33:21",3)]
+        [InlineData("2018-02-02T12:33:21",10)]
+        public void MustReturnNextDaysOfWeek(string value, int daysAhead)
+        {
+            var startDate = DateTime.Parse(value);
+
+            var days = daysAhead;
+            var expectedList = new List<DateTime>();
+            for (int i = 0; i <= days; i++)
+            {
+                if (startDate.AddDays(i).DayOfWeek == DayOfWeek.Saturday ||
+                    startDate.AddDays(i).DayOfWeek == DayOfWeek.Sunday)
+                {
+                    days++;
+                    continue;
+                }
+                expectedList.Add(startDate.AddDays(i));
+            }
+
+            startDate.NextWeekDays(daysAhead).ShouldBeEqual(expectedList);
+        }
+        [Theory]
+        [InlineData("2017-01-01T01:00:00",2)]
+        [InlineData("2017-01-15",0)]
+        [InlineData("2017-03-02T12:33:21",3)]
+        [InlineData("2018-02-02T12:33:21",10)]
+        public void MustReturnNextDaysOfWeekStraight(string value, int daysAhead)
+        {
+            var startDate = DateTime.Parse(value);
+
+            var days = daysAhead;
+            var expectedList = new List<DateTime>();
+            for (int i = 0; i <= days; i++)
+            {
+                if (startDate.AddDays(i).DayOfWeek == DayOfWeek.Saturday ||
+                    startDate.AddDays(i).DayOfWeek == DayOfWeek.Sunday)
+                {
+                    days++;
+                    continue;
+                }
+                expectedList.Add(startDate.AddDays(i));
+            }
+
+            startDate.NextWeekDays(daysAhead, null, false).ShouldBeEqual(expectedList);
+        }
+        [Theory]
+        [InlineData("2017-01-01T01:00:00",-2)]
+        [InlineData("2017-01-15",-1)]
+        [InlineData("2017-03-02T12:33:21",-3)]
+        [InlineData("2018-02-02T12:33:21",-10)]
+        public void MustReturnDaysBeforeOfWeek(string value, int daysAhead)
+        {
+            var startDate = DateTime.Parse(value);
+
+            var days = daysAhead;
+            var expectedList = new List<DateTime>();
+            for (int i = 0; i >= days; i--)
+            {
+                if (startDate.AddDays(i).DayOfWeek == DayOfWeek.Saturday || 
+                    startDate.AddDays(i).DayOfWeek == DayOfWeek.Sunday) { 
+                    days--;
+                    continue;
+                }
+                expectedList.Add(startDate.AddDays(i));
+            }
+
+            startDate.NextWeekDays(daysAhead).ShouldBeEqual(expectedList);
+        }
+        [Theory]
+        [InlineData("2017-01-01T01:00:00", -2)]
+        [InlineData("2017-01-15", 0)]
+        [InlineData("2017-03-02T12:33:21", -3)]
+        [InlineData("2018-02-02T12:33:21", -10)]
+        public void MustReturnDaysBeforeOfWeekBackwards(string value, int daysAhead)
+        {
+            var startDate = DateTime.Parse(value);
+
+            var days = daysAhead;
+            var expectedList = new List<DateTime>();
+            for (int i = 0; i >= days; i--)
+            {
+                if (startDate.AddDays(i).DayOfWeek == DayOfWeek.Saturday || 
+                    startDate.AddDays(i).DayOfWeek == DayOfWeek.Sunday) { 
+                    days--;
+                    continue;
+                }
+                expectedList.Add(startDate.AddDays(i));
+            }
+
+            startDate.NextWeekDays(daysAhead, null, true).ShouldBeEqual(expectedList);
         }
     }
 }
