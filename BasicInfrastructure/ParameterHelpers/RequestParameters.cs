@@ -14,6 +14,7 @@ namespace BasicInfrastructure.ParameterHelpers
 
         public int? ItemCount { get; set; }
         public int? PageCount { get; set; }
+        public bool? CountItems { get; set; }
 
         public RequestParameters()
         {
@@ -28,7 +29,7 @@ namespace BasicInfrastructure.ParameterHelpers
 
             query = GetFiltersQuery(query);
             query = GetSortQuery(query);
-            query = GetPaginationQuery(query, countItems);
+            query = GetPaginationQuery(query, CountItems??countItems);
 
             return query;
         }

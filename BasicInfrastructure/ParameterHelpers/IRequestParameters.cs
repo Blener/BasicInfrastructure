@@ -10,6 +10,8 @@ namespace BasicInfrastructure.ParameterHelpers
         int? PerPage { get; set; }
         int? ItemCount { get; set; }
         int? PageCount { get; set; }
+        bool? CountItems { get; set; }
+        //TODO Colocar link de next e previous pages
 
         List<SortItem<T>> SortItems { get; set; }
         List<Filter<T>> Filters { get; set; }
