@@ -28,6 +28,11 @@ namespace BasicInfrastructureWeb
             //Configuração de injeção de dependência
             config.Services.Replace(typeof(IHttpControllerSelector), new CustomControllerSelector(config));
 
+#if DEBUG
+            var cors = new EnableCorsAttribute("*", "*", "*");
+            config.EnableCors(cors);
+#endif
+
             // Web API routes
             config.MapHttpAttributeRoutes();
 
