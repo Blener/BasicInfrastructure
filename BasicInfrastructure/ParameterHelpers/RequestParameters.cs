@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BasicInfrastructureExtensions.Extensions;
+using BasicInfrastructure.Persistence;
 
 namespace BasicInfrastructure.ParameterHelpers
 {
-    public class RequestParameters<T> : IRequestParameters<T>
+    public class RequestParameters<T> : IRequestParameters<T> where T:Entity
     {
         public int? PageId { get; set; }
         public int? PerPage { get; set; }
@@ -29,7 +29,7 @@ namespace BasicInfrastructure.ParameterHelpers
 
             query = GetFiltersQuery(query);
             query = GetSortQuery(query);
-            query = GetPaginationQuery(query, CountItems??countItems);
+            query = GetPaginationQuery(query, CountItems ?? countItems);
 
             return query;
         }
@@ -45,7 +45,7 @@ namespace BasicInfrastructure.ParameterHelpers
         protected virtual IQueryable<T> GetSortQuery(IQueryable<T> query)
         {
             if (SortItems == null || !SortItems.Any())
-                return query;
+                return query.OrderBy(x=> x.Id);
 
             return SortItems
                 .OrderBy(x => x.Priotity ?? 0)

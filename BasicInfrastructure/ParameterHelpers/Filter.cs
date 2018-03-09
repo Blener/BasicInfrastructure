@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
+using BasicInfrastructure.Extensions;
 using BasicInfrastructure.Persistence;
-using BasicInfrastructureExtensions.Extensions;
 
 namespace BasicInfrastructure.ParameterHelpers
 {
