@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace BasicInfrastructureExtensions.Extensions
 {
@@ -28,6 +29,21 @@ namespace BasicInfrastructureExtensions.Extensions
         public static object GetValue(this object model, string property)
         {
             return model.GetType().GetProperty(property).GetValue(model, new object[0]);
+        }
+        public static dynamic PopulateProperties(this object obj, params object[] anotherObject)
+        {
+            var properties = anotherObject
+                .SelectMany(x => x.GetType().GetProperties(), (o, p) => new { o, p });
+
+            foreach (var prop in properties)
+            {
+                var pp = obj.GetType().GetProperty(prop.p.Name);
+                if (pp == null) continue;
+                if (pp.PropertyType == prop.p.PropertyType)
+                    pp.SetValue(obj, prop.p.GetValue(prop.o));
+            }
+
+            return obj;
         }
     }
 }

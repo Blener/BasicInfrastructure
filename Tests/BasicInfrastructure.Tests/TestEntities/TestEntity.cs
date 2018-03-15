@@ -20,4 +20,13 @@ namespace BasicInfrastructurePersistence.Tests.TestEntities
         public DateTime DateCreated { get; set; }
 
     }
+    public class TestContrato2 : TestEntity
+    {
+        public int? TitularId2 { get; set; }
+        public int? TitularId { get; set; }
+        public string NumeroContrato { get; set; }
+        public string NumeroContrato2 { get; set; }
+        public string NumeroProposta { get; set; }
+
+    }
 }
