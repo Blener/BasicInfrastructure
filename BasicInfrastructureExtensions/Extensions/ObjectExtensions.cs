@@ -32,7 +32,7 @@ namespace BasicInfrastructureExtensions.Extensions
         }
         public static dynamic PopulateProperties(this object obj, params object[] anotherObject)
         {
-            var properties = anotherObject
+            var properties = anotherObject.Where(x => x != null)
                 .SelectMany(x => x.GetType().GetProperties(), (o, p) => new { o, p });
 
             foreach (var prop in properties)
