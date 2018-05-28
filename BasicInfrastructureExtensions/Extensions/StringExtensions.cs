@@ -383,5 +383,61 @@ namespace BasicInfrastructureExtensions.Extensions
         {
             return Pis.Validate(text);
         }
+
+        /// <summary>
+        /// Converte uma string em "camelHump", "PascalCase", "lisp-case" ou "snake_case" ou separada por espaço em PascalCase,
+        /// </summary>
+        /// <param name="value">A instância da string</param>
+        /// <returns>Uma palavra separada por espaço caso a original se aplique às regras mencionadas</returns>
+        [DebuggerStepThrough]
+        public static string ToPascalCase(this string value)
+        {
+            var matches = Regex.Matches(value, "([A-Z][a-z]{1,})|(?<=[a-z])[A-Z]{1,}");
+            foreach (Match match in matches)
+            {
+                var pascal = match.Value;
+                value = value.Replace(pascal, $"{pascal.Substring(0, 1).ToUpper()}{pascal.Substring(1).ToLower()}");
+            }
+
+            value = $"{value.Substring(0, 1).ToUpper()}{value.Substring(1)}";
+
+            matches = Regex.Matches(value, "([_]|[-]|[ ])([a-z])*");
+            foreach (Match match in matches)
+            {
+                var pascal = match.Value;
+                if (pascal.Length > 1)
+                    value = value.Replace(pascal, $"{pascal.Substring(1, 1).ToUpper()}{pascal.Substring(2).ToLower()}");
+            }
+
+            matches = Regex.Matches(value, "([_]|[-]|[ ])([A-Z])*");
+            foreach (Match match in matches)
+            {
+                var pascal = match.Value;
+                if (pascal.Length > 1)
+                    value = value.Replace(pascal, $"{pascal.Substring(1, 1).ToUpper()}{pascal.Substring(2).ToLower()}");
+            }
+
+            value = $"{value.Substring(0, 1).ToUpper()}{value.Substring(1)}";
+
+            if (value.IsAllUpper())
+                value = $"{value.Substring(0, 1).ToUpper()}{value.Substring(1).ToLower()}";
+
+            value = Regex.Replace(value, "[_]|[-]|[ ]", "");
+
+            value = Regex.Replace(value, "(?<=^[A-Z])[A-Z]{1,}(?=[A-Z][a-z])", x => x.Value.ToLower());
+            return value;
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsAllUpper(this string str)
+        {
+            return str.ToUpper() == str;
+        }
+        [DebuggerStepThrough]
+        public static bool IsAllLower(this string str)
+        {
+            return str.ToLower() == str;
+        }
+
     }
 }

@@ -449,6 +449,64 @@ namespace BasicInfrastructurePersistence.Tests.Extensions
         {
             str.Sanitize(true).ShouldBeEqual(exp);
         }
+        [Theory]
+        [InlineData("ONEWORD", "Oneword")]
+        [InlineData("oneword", "Oneword")]
+        [InlineData("onew*ord", "Onew*ord")]
+        [InlineData("onew/ord", "Onew/ord")]
+        [InlineData("separatedWords", "SeparatedWords")]
+        [InlineData("SeparatedWords", "SeparatedWords")]
+        [InlineData("separated_Words", "SeparatedWords")]
+        [InlineData("separated_words", "SeparatedWords")]
+        [InlineData("separated_wordsAnd-More words", "SeparatedWordsAndMoreWords")]
+        [InlineData("another-word", "AnotherWord")]
+        [InlineData("two words", "TwoWords")]
+        [InlineData("P_COD_USUARIO", "PCodUsuario")]
+        [InlineData("COD_USUARIO", "CodUsuario")]
+        [InlineData("P_COd_Usuario_nome", "PCodUsuarioNome")]
+        public void MustConvertToPascalCase(string value, string expected)
+        {
+            value.ToPascalCase().ShouldBeEqual(expected);
+        }
+
+        [Theory]
+        [InlineData("ToLower")]
+        [InlineData("toupper")]
+        [InlineData("loweR1")]
+        [InlineData("Lower1")]
+        public void MustNotBeUpperCase(string value)
+        {
+            value.IsAllUpper().ShouldBeFalse();
+        }
+
+        [Theory]
+        [InlineData("UPPER")]
+        [InlineData("UPPER1")]
+        [InlineData("45641")]
+        public void MustBeUpperCase(string value)
+        {
+            value.IsAllUpper().ShouldBeTrue();
+        }
+
+
+        [Theory]
+        [InlineData("ToLower")]
+        [InlineData("TOLOWER")]
+        [InlineData("loweR1")]
+        [InlineData("Lower1")]
+        public void MustNotBeLowerCase(string value)
+        {
+            value.IsAllLower().ShouldBeFalse();
+        }
+
+        [Theory]
+        [InlineData("lower")]
+        [InlineData("lower1")]
+        [InlineData("45641")]
+        public void MustBeLowerCase(string value)
+        {
+            value.IsAllLower().ShouldBeTrue();
+        }
 
     }
 }
